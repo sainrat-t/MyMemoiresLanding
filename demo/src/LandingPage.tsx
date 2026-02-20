@@ -199,21 +199,52 @@ const SvgIllustration: React.FC = () => (
         <line x1="778" y1="410" x2="816" y2="410" stroke="#FFFFFF" strokeWidth="4" strokeLinecap="round" className="draw" style={{ animationDelay: '4.5s' }} />
       </g>
     </g>
-  </svg>
+  </svg >
 );
 
 const LandingPage: React.FC = () => {
   const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'submitted'>('idle');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
 
-    // Simulation API
-    setTimeout(() => {
-      setStatus('submitted');
-    }, 1200);
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ firstName, lastName, email }),
+      });
+
+      if (response.ok) {
+        setStatus('submitted');
+      } else {
+        // En cas d'erreur de l'API (ex: mauvais mot de passe SMTP sur Vercel)
+        console.error('Erreur lors de la souscription');
+        setStatus('idle');
+        alert("Une erreur s'est produite lors de l'inscription. Veuillez réessayer.");
+      }
+    } catch (error) {
+      console.error('Erreur réseau:', error);
+      setStatus('idle');
+      alert("Impossible de joindre le serveur. Veuillez vérifier votre connexion.");
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    if (status === 'submitted') {
+      setStatus('idle');
+      setEmail('');
+      setFirstName('');
+      setLastName('');
+    }
   };
 
   return (
@@ -260,52 +291,19 @@ const LandingPage: React.FC = () => {
               MyMémoires vous accompagne dans l'écriture de votre vie. Capturez vos anecdotes pour créer un héritage inestimable, prêt à être transmis.
             </p>
 
-            {/* Formulaire Glassmorphism */}
-            <div className="w-full relative group z-20">
-              <div className="absolute -inset-1.5 bg-gradient-to-r from-[#E5C5C5]/40 to-[#E1E0F5]/40 rounded-[2rem] blur-md opacity-20 sm:opacity-0 sm:group-hover:opacity-100 transition duration-1000"></div>
-
-              <div className="relative bg-[#ffffffb0] backdrop-blur-2xl border border-white p-7 sm:p-9 rounded-[2rem] shadow-[0_8px_40px_rgba(0,0,0,0.04)] w-full overflow-hidden">
-
-                {status === 'submitted' ? (
-                  <div className="flex flex-col items-center justify-center text-center animate-in fade-in zoom-in duration-500 py-4">
-                    <div className="w-14 h-14 bg-gradient-to-tr from-[#E1E0F5] to-white text-[#4F4D4C] rounded-full flex items-center justify-center mb-5 shadow-sm border border-white">
-                      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                    </div>
-                    <h3 className="text-[1.35rem] font-serif text-[#3A3837] mb-1.5">Merveilleux !</h3>
-                    <p className="text-[#4F4D4C]/70 text-[14px] font-light">Vous êtes sur la liste d'attente. Nous vous recontacterons très vite.</p>
-                  </div>
-                ) : (
-                  <div className="animate-in fade-in duration-500">
-                    <h2 className="text-[17px] font-medium text-[#3A3837] mb-5">
-                      Accès en avant-première
-                    </h2>
-                    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
-                      <input
-                        type="email"
-                        required
-                        disabled={status === 'loading'}
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Thibaut@exemple.com"
-                        className="flex-1 w-full px-5 py-3.5 rounded-2xl bg-[#F8F6F4]/80 border border-white focus:outline-none focus:ring-[3px] focus:ring-[#E1E0F5] focus:bg-white transition-all text-[#4F4D4C] placeholder-[#4F4D4C]/40 disabled:opacity-50 text-[15px]"
-                      />
-                      <button
-                        type="submit"
-                        disabled={status === 'loading'}
-                        className="px-7 py-3.5 rounded-2xl bg-[#3A3837] text-white font-medium text-[15px] hover:bg-black hover:shadow-[0_4px_20px_rgba(58,56,55,0.2)] transition-all duration-300 transform active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center min-w-[130px]"
-                      >
-                        {status === 'loading' ? (
-                          <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                        ) : "S'inscrire"}
-                      </button>
-                    </form>
-                  </div>
-                )}
+            {/* Bouton d'action principal */}
+            <div className="w-full relative group z-20 mt-4">
+              <div className="relative w-full max-w-[420px]">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(true)}
+                  className="w-full bg-[#3A3837] text-white py-4 px-6 rounded-2xl md:rounded-full font-medium text-[15.5px] tracking-wide shadow-[0_4px_15px_rgba(58,56,55,0.15)] hover:bg-[#2A2928] hover:shadow-[0_6px_20px_rgba(58,56,55,0.25)] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-3 group/btn"
+                >
+                  S'inscrire à l'avant-première
+                  <svg className="w-5 h-5 opacity-70 group-hover/btn:opacity-100 group-hover/btn:translate-x-1 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </button>
               </div>
             </div>
 
@@ -328,6 +326,161 @@ const LandingPage: React.FC = () => {
         </div>
 
       </div>
+
+      {/* --- POP-IN MODAL --- */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto w-full min-h-screen">
+
+          {/* Overlay flouté (Backdrop) */}
+          <div
+            className="fixed inset-0 bg-[#F4F1EE]/60 backdrop-blur-xl transition-opacity animate-in fade-in duration-300"
+            onClick={closeModal}
+          ></div>
+
+          {/* Modal Container */}
+          <div className="relative w-full max-w-[480px] bg-white/70 backdrop-blur-2xl rounded-[32px] sm:rounded-[36px] border border-white/80 shadow-[0_20px_60px_rgba(0,0,0,0.06),0_1px_3px_rgba(255,255,255,0.4)_inset] overflow-hidden my-auto animate-in zoom-in-95 fade-in duration-300 slide-in-from-bottom-4">
+
+            {/* Bouton Fermer */}
+            <button
+              onClick={closeModal}
+              className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center rounded-full bg-black/5 hover:bg-black/10 text-black/40 hover:text-black/80 transition-colors z-20"
+              aria-label="Fermer"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Contenu */}
+            <div className="p-8 sm:p-10 relative z-10">
+
+              {/* Effet lumineux décoratif dans la modale */}
+              <div className="absolute -top-24 -left-24 w-48 h-48 bg-[#E5C5C5] rounded-full mix-blend-multiply filter blur-[50px] opacity-40 pointer-events-none"></div>
+
+              {status === 'submitted' ? (
+                /* ÉTAPE SUCCÈS */
+                <div className="text-center animate-in fade-in zoom-in-95 duration-500 py-6">
+                  <div className="mx-auto flex items-center justify-center w-16 h-16 rounded-full bg-green-50/50 mb-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+                    <svg className="w-8 h-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-serif text-[#3A3837] mb-3">
+                    Bientôt avec nous !
+                  </h3>
+                  <p className="text-[16px] text-[#4F4D4C]/80 leading-relaxed mb-8 font-light">
+                    Merci <span className="font-medium text-[#4F4D4C]">{firstName}</span> ! Votre inscription est bien confirmée. Vous recevrez un e-mail prochainement.
+                  </p>
+                  <button
+                    onClick={closeModal}
+                    className="w-full bg-white text-[#3A3837] border border-black/10 py-3.5 px-6 rounded-2xl font-medium text-[15px] shadow-sm hover:bg-gray-50 hover:border-black/20 transition-all hover:shadow-[0_2px_10px_rgba(0,0,0,0.05)]"
+                  >
+                    Fermer
+                  </button>
+                </div>
+              ) : (
+                /* FORMULAIRE */
+                <div className="animate-in fade-in duration-500 relative">
+                  <h2 className="text-[28px] leading-[1.1] font-serif text-[#3A3837] mb-3 pr-6">
+                    Rejoignez l'aventure
+                  </h2>
+                  <p className="text-[15.5px] text-[#4F4D4C]/70 mb-8 font-light pr-4 leading-relaxed">
+                    Laissez-nous vos coordonnées pour être informé en priorité du lancement de MyMémoires.
+                  </p>
+
+                  <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      {/* Prénom */}
+                      <div className="flex-1 relative group/input">
+                        <label htmlFor="firstName" className="sr-only">Prénom</label>
+                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#4F4D4C]/30 group-focus-within/input:text-[#4F4D4C]/70 transition-colors">
+                          <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          </svg>
+                        </div>
+                        <input
+                          type="text"
+                          id="firstName"
+                          value={firstName}
+                          onChange={(e) => setFirstName(e.target.value)}
+                          placeholder="Prénom"
+                          required
+                          className="w-full pl-10 pr-4 py-3.5 rounded-2xl bg-white/60 border border-white/60 hover:border-white/80 shadow-[0_2px_8px_rgba(0,0,0,0.02),0_1px_1px_rgba(255,255,255,1)_inset] text-[15px] text-[#3A3837] placeholder:text-[#4F4D4C]/40 focus:outline-none focus:ring-2 focus:ring-[#E5C5C5] focus:bg-white/90 focus:border-transparent transition-all font-light"
+                        />
+                      </div>
+
+                      {/* Nom */}
+                      <div className="flex-1 relative group/input">
+                        <label htmlFor="lastName" className="sr-only">Nom</label>
+                        <input
+                          type="text"
+                          id="lastName"
+                          value={lastName}
+                          onChange={(e) => setLastName(e.target.value)}
+                          placeholder="Nom"
+                          required
+                          className="w-full px-4 py-3.5 rounded-2xl bg-white/60 border border-white/60 hover:border-white/80 shadow-[0_2px_8px_rgba(0,0,0,0.02),0_1px_1px_rgba(255,255,255,1)_inset] text-[15px] text-[#3A3837] placeholder:text-[#4F4D4C]/40 focus:outline-none focus:ring-2 focus:ring-[#E5C5C5] focus:bg-white/90 focus:border-transparent transition-all font-light"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Email */}
+                    <div className="relative mt-1 group/input">
+                      <label htmlFor="email" className="sr-only">Adresse e-mail</label>
+                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#4F4D4C]/30 group-focus-within/input:text-[#4F4D4C]/70 transition-colors">
+                        <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <input
+                        type="email"
+                        id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Thibaut@exemple.com"
+                        required
+                        className="w-full pl-10 pr-4 py-3.5 rounded-2xl bg-white/60 border border-white/60 hover:border-white/80 shadow-[0_2px_8px_rgba(0,0,0,0.02),0_1px_1px_rgba(255,255,255,1)_inset] text-[15px] text-[#3A3837] placeholder:text-[#4F4D4C]/40 focus:outline-none focus:ring-2 focus:ring-[#E5C5C5] focus:bg-white/90 focus:border-transparent transition-all font-light"
+                      />
+                    </div>
+
+                    {/* Bouton Submit */}
+                    <button
+                      type="submit"
+                      disabled={status === 'loading'}
+                      className="w-full mt-4 bg-[#3A3837] text-white py-3.5 px-6 rounded-2xl md:rounded-full font-medium text-[15.5px] tracking-wide shadow-[0_4px_12px_rgba(58,56,55,0.15)] hover:bg-[#2A2928] hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-70 disabled:hover:translate-y-0 disabled:cursor-not-allowed flex items-center justify-center gap-3 group/submit"
+                    >
+                      {status === 'loading' ? (
+                        <>
+                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Inscription en cours...
+                        </>
+                      ) : (
+                        <>
+                          Valider mon inscription
+                          <svg className="w-4 h-4 opacity-70 group-hover/submit:opacity-100 group-hover/submit:translate-x-1 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                          </svg>
+                        </>
+                      )}
+                    </button>
+
+                    <p className="text-center text-[12.5px] text-[#4F4D4C]/40 mt-3 font-light flex items-center justify-center gap-1.5">
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                      Vos données resteront confidentielles.
+                    </p>
+                  </form>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

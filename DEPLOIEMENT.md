@@ -44,35 +44,20 @@ Render est une excellente alternative gratuite pour l'hébergement de sites stat
 
 ---
 
-## Ce qu'il reste à faire avant le lancement officiel
+## Configuration de l'Email Backend (SMTP OVH / Zimbra)
 
-Actuellement, le formulaire simule une soumission. Pour qu'il fonctionne réellement et récolte les emails :
+Le formulaire d'inscription envoie les données à une **Serverless Function** sur Vercel (`demo/api/subscribe.js`). Ce mini-serveur intégré utilise vos identifiants SMTP OVH/Zimbra pour envoyer les e-mails de façon professionnelle (un e-mail à vous, un e-mail à l'inscrit).
 
-1. Vous devrez créer un backend ou utiliser un service tiers (comme Formspree, Mailchimp, Resend, ou un serveur Node/Python) pour recevoir les inscriptions.
-2. Modifier la fonction `handleSubmit` dans `LandingPage.tsx` pour faire une véritable requête `fetch` ou `axios` vers ce service :
+Pour que cela fonctionne lors du déploiement sur Vercel, vous **DEVEZ** configurer vos variables d'environnement secrètes :
 
-```javascript
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('loading');
-    
-    try {
-      // Exemple avec un vrai endpoint
-      const response = await fetch('VOTRE_URL_API_ICI', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
-      
-      if (response.ok) {
-        setStatus('submitted');
-      } else {
-        // Gérer l'erreur (ex: afficher un toast)
-        setStatus('idle');
-      }
-    } catch (error) {
-      // Gérer l'erreur réseau
-      setStatus('idle');
-    }
-  };
-```
+1. Allez sur votre projet dans Vercel.
+2. Cliquez sur l'onglet **Settings** puis **Environment Variables** sur le menu de gauche.
+3. Ajoutez les 4 variables suivantes :
+   - **Nom :** `SMTP_HOST` | **Valeur :** `ssl0.ovh.net` (ou l'hôte de votre fournisseur)
+   - **Nom :** `SMTP_PORT` | **Valeur :** `465`
+   - **Nom :** `SMTP_USER` | **Valeur :** `thibaut@mymemoires.com` (votre adresse email Zimbra/OVH)
+   - **Nom :** `SMTP_PASS` | **Valeur :** `VotreMotDePasseZimbra`
+4. Cliquez sur **Save** pour enregistrer chaque variable.
+5. Une fois les variables ajoutées, il faut **redéployer** le site (Allez dans l'onglet *Deployments*, cliquez sur les 3 petits points du dernier déploiement, et choisissez *Redeploy*).
+
+Votre backend d'inscription est désormais fonctionnel et ultra-sécurisé !
