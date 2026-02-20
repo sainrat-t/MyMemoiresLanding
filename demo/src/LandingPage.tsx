@@ -258,13 +258,13 @@ const LandingPage: React.FC = () => {
         <div className="absolute -bottom-20 left-1/2 w-[24rem] h-[24rem] bg-[#C2BDE0] rounded-full mix-blend-multiply blur-[90px] opacity-35 transform -translate-x-1/2"></div>
       </div>
 
-      {/* --- MAIN LAYOUT : Text overlaps Illustration on Mobile --- */}
-      <div className="relative z-10 w-full min-h-[100dvh] flex flex-col lg:flex-row items-center max-w-7xl mx-auto">
+      {/* --- MAIN LAYOUT : Text stacked on top of Illustration on Mobile --- */}
+      <div className="relative z-10 w-full min-h-[100dvh] flex flex-col lg:flex-row items-center justify-center lg:justify-start max-w-7xl mx-auto pb-12 lg:pb-0">
 
         {/* --- LEFT COL : TEXT AND FORM --- */}
-        <div className="w-full lg:w-[55%] flex flex-col justify-center px-6 sm:px-12 lg:px-16 pt-24 lg:pt-0 pb-32 lg:pb-0 z-30">
+        <div className="w-full lg:w-[55%] flex flex-col justify-center px-6 sm:px-12 lg:px-16 pt-20 sm:pt-24 lg:pt-0 z-30">
 
-          <div className="max-w-[540px] w-full mt-4 lg:mt-0">
+          <div className="max-w-[540px] w-full mt-4 lg:mt-0 mx-auto lg:mx-0">
             {/* Badge Bientôt disponible */}
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 mb-8 text-[13px] font-medium tracking-wide text-[#3A3837] bg-white/50 rounded-full border border-white/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] backdrop-blur-md">
               <span className="relative flex h-2 w-2">
@@ -307,19 +307,15 @@ const LandingPage: React.FC = () => {
               </div>
             </div>
 
-
           </div>
         </div>
 
         {/* --- RIGHT COL (ILLUSTRATION) --- */}
-        {/* On Mobile: Absolute, fading behind the content at bottom right */}
+        {/* On Mobile: Flows below the text */}
         {/* On Desktop: Normal right column behavior */}
-        <div className="absolute lg:relative right-0 bottom-0 lg:bottom-auto w-full lg:w-[45%] h-[50vh] lg:h-full flex items-end lg:items-center justify-end lg:justify-center overflow-hidden lg:overflow-visible z-10 pointer-events-none lg:pointer-events-auto opacity-40 lg:opacity-100">
+        <div className="relative w-full lg:w-[45%] mt-12 sm:mt-16 lg:mt-0 flex items-center justify-center overflow-hidden lg:overflow-visible z-10 pointer-events-none lg:pointer-events-auto">
 
-          {/* Fading mask on mobile to blend the SVG up into the background */}
-          <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-[#F4F1EE] lg:hidden z-20"></div>
-
-          <div className="relative w-full max-w-[130%] sm:max-w-lg lg:max-w-[45rem] transform translate-y-1/4 translate-x-[15%] lg:translate-y-0 lg:translate-x-0 transition-transform duration-1000 ease-out lg:hover:scale-[1.02]">
+          <div className="relative w-full max-w-full px-4 sm:px-0 sm:max-w-md lg:max-w-[45rem] transform transition-transform duration-1000 ease-out lg:hover:scale-[1.02] flex justify-center">
             <SvgIllustration />
           </div>
 
