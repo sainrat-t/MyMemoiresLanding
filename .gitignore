@@ -36,3 +36,7 @@ demo/node_modules/
 demo/dist/
 demo/dist-ssr/
 demo/*.local
+
+# Brouillons et fichiers de travail racine
+/LandingPage.tsx
+/ai_studio_code*.txt
