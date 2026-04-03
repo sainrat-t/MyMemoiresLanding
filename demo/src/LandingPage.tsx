@@ -225,7 +225,6 @@ const LandingPage: React.FC = () => {
       if (response.ok) {
         setStatus('submitted');
       } else {
-        // En cas d'erreur de l'API (ex: mauvais mot de passe SMTP sur Vercel)
         console.error('Erreur lors de la souscription');
         setStatus('idle');
         alert("Une erreur s'est produite lors de l'inscription. Veuillez réessayer.");
@@ -258,12 +257,9 @@ const LandingPage: React.FC = () => {
         <div className="absolute -bottom-20 left-1/2 w-[24rem] h-[24rem] bg-[#C2BDE0] rounded-full mix-blend-multiply blur-[90px] opacity-35 transform -translate-x-1/2"></div>
       </div>
 
-      {/* --- MAIN LAYOUT : Text stacked on top of Illustration on Mobile --- */}
+      {/* SECTION 1: Hero */}
       <div className="relative z-10 w-full min-h-[100dvh] flex flex-col lg:flex-row items-center justify-center lg:justify-start max-w-7xl mx-auto pb-12 lg:pb-0">
-
-        {/* --- LEFT COL : TEXT AND FORM --- */}
         <div className="w-full lg:w-[55%] flex flex-col justify-center px-6 sm:px-12 lg:px-16 pt-20 sm:pt-24 lg:pt-0 z-30">
-
           <div className="max-w-[540px] w-full mt-4 lg:mt-0 mx-auto lg:mx-0">
             {/* Badge Bientôt disponible */}
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 mb-8 text-[13px] font-medium tracking-wide text-[#3A3837] bg-white/50 rounded-full border border-white/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] backdrop-blur-md">
@@ -277,18 +273,18 @@ const LandingPage: React.FC = () => {
             {/* Titre Principal */}
             <h1 className="text-[3rem] xs:text-[3.5rem] sm:text-[4rem] lg:text-[4.5rem] font-serif text-[#3A3837] mb-6 leading-[1.05] tracking-tight relative">
               <span className="relative z-10">
-                Préservez votre <br />
-                histoire, <br className="hidden sm:block" />
-                <span className="text-[#C2BDE0] italic font-light relative">
-                  simplement
+                Le premier biographe<br />
+                qui <span className="text-[#C2BDE0] italic font-light relative">
+                  écoute
                   <span className="absolute -bottom-2 lg:-bottom-3 left-0 w-full h-2 lg:h-3 bg-[#E1E0F5]/50 -z-10 rounded-sm skew-x-[-12deg]"></span>
-                </span>.
+                </span><br />
+                vos souvenirs.
               </span>
             </h1>
 
             {/* Description */}
             <p className="text-lg sm:text-[21px] text-[#4F4D4C]/75 mb-10 max-w-[480px] leading-[1.6] font-light">
-              MyMémoires vous accompagne dans l'écriture de votre vie. Capturez vos anecdotes pour créer un héritage inestimable, prêt à être transmis.
+               Ne laissez plus vos histoires se perdre. MyMémoires transforme vos mots en un magnifique héritage familial, simplement en parlant.
             </p>
 
             {/* Bouton d'action principal */}
@@ -306,22 +302,154 @@ const LandingPage: React.FC = () => {
                 </button>
               </div>
             </div>
-
           </div>
         </div>
-
-        {/* --- RIGHT COL (ILLUSTRATION) --- */}
-        {/* On Mobile: Flows below the text */}
-        {/* On Desktop: Normal right column behavior */}
         <div className="relative w-full lg:w-[45%] mt-12 sm:mt-16 lg:mt-0 flex items-center justify-center overflow-hidden lg:overflow-visible z-10 pointer-events-none lg:pointer-events-auto">
-
           <div className="relative w-full max-w-full px-4 sm:px-0 sm:max-w-md lg:max-w-[45rem] transform transition-transform duration-1000 ease-out lg:hover:scale-[1.02] flex justify-center">
             <SvgIllustration />
           </div>
-
         </div>
-
       </div>
+
+      {/* SECTION 2 : Comment ça marche ? */}
+      <section className="relative z-10 py-24 bg-white/40 backdrop-blur-xl border-y border-white/60">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+          <h2 className="text-[2.5rem] lg:text-[3rem] font-serif text-[#3A3837] mb-4">La magie d'un livre qui s'écrit tout seul</h2>
+          <p className="text-lg text-[#4F4D4C]/75 mb-20 max-w-2xl mx-auto font-light">
+            Oubliez la page blanche. Notre technologie s'efface pour laisser place à la discussion, comme avec un vieil ami.
+          </p>
+          <div className="grid md:grid-cols-3 gap-12 lg:gap-8">
+            <div className="flex flex-col items-center group">
+              <div className="w-20 h-20 rounded-[1.2rem] bg-white flex items-center justify-center mb-6 shadow-[0_4px_15px_rgba(0,0,0,0.03)] border border-white/50 group-hover:scale-105 transition-transform">
+                <svg className="w-10 h-10 text-[#4F4D4C]/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-medium text-[#3A3837] mb-3">1. Racontez</h3>
+              <p className="text-[#4F4D4C]/70 leading-relaxed font-light">
+                Ouvrez l'application et parlez comme vous le feriez avec un ami. Notre studio vocal enregistre vos souvenirs.
+              </p>
+            </div>
+            <div className="flex flex-col items-center group">
+              <div className="w-20 h-20 rounded-[1.2rem] bg-white flex items-center justify-center mb-6 shadow-[0_4px_15px_rgba(0,0,0,0.03)] border border-white/50 group-hover:scale-105 transition-transform">
+                <svg className="w-10 h-10 text-[#4F4D4C]/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-medium text-[#3A3837] mb-3">2. Laissez-vous guider</h3>
+              <p className="text-[#4F4D4C]/70 leading-relaxed font-light">
+                Une hésitation ? Notre IA bienveillante vous relance avec des questions pertinentes pour raviver vos mémoires.
+              </p>
+            </div>
+            <div className="flex flex-col items-center group">
+              <div className="w-20 h-20 rounded-[1.2rem] bg-white flex items-center justify-center mb-6 shadow-[0_4px_15px_rgba(0,0,0,0.03)] border border-white/50 group-hover:scale-105 transition-transform">
+                <svg className="w-10 h-10 text-[#4F4D4C]/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-medium text-[#3A3837] mb-3">3. Admirez votre livre</h3>
+              <p className="text-[#4F4D4C]/70 leading-relaxed font-light">
+                Vos paroles sont automatiquement transformées en chapitres littéraires. Commandez votre livre imprimé.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 3 : Personas */}
+      <section className="relative z-10 py-24">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <h2 className="text-[2.5rem] lg:text-[3rem] font-serif text-[#3A3837] text-center mb-16">Chaque histoire mérite d'être conservée</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white/80 backdrop-blur-md p-10 rounded-[2rem] border border-white shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] hover:-translate-y-2 transition-transform duration-300">
+              <h3 className="text-2xl font-serif text-[#3A3837] mb-4">Pour les Familles</h3>
+              <p className="text-[#4F4D4C]/75 leading-relaxed font-light">
+                Préservez l'héritage immatériel de vos parents et grands-parents. Offrez-leur l'opportunité de se raconter et de laisser une trace impérissable pour les générations futures.
+              </p>
+            </div>
+            <div className="bg-white/80 backdrop-blur-md p-10 rounded-[2rem] border border-white shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] hover:-translate-y-2 transition-transform duration-300">
+              <h3 className="text-2xl font-serif text-[#3A3837] mb-4">Pour les Seniors</h3>
+              <p className="text-[#4F4D4C]/75 leading-relaxed font-light">
+                Laissez une trace indélébile de votre parcours, sans affronter l'angoisse de la page blanche. Racontez vos anecdotes à votre rythme et voyez votre vie devenir roman.
+              </p>
+            </div>
+            <div className="bg-[#3A3837] p-10 rounded-[2rem] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.15)] hover:-translate-y-2 transition-transform duration-300 text-white relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#4F4D4C] rounded-full blur-3xl opacity-50 pointer-events-none"></div>
+              <h3 className="text-2xl font-serif mb-4 relative z-10">Pour les Aidants</h3>
+              <p className="text-white/80 leading-relaxed font-light relative z-10">
+                Valorisez l'identité de vos résidents à travers des séances de thérapie par la réminiscence simples à animer, aboutissant sur un objet physique de grande fierté.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 4 : Résultat */}
+      <section className="relative z-10 py-24 bg-white/40 backdrop-blur-xl border-y border-white/60">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full flex flex-col lg:flex-row items-center gap-16">
+          <div className="w-full lg:w-1/2 order-2 lg:order-1">
+            <img 
+              src="/images/hero.png" 
+              alt="Personne senior souriante admirant le livre de ses mémoires" 
+              className="w-full h-auto rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] transform transition-transform duration-700 hover:scale-[1.02] border border-white"
+            />
+          </div>
+          <div className="w-full lg:w-1/2 order-1 lg:order-2">
+            <h2 className="text-3xl sm:text-4xl lg:text-[3.5rem] leading-[1.1] font-serif text-[#3A3837] mb-6">Le livre que vous tenez entre vos mains.</h2>
+            <p className="text-lg text-[#4F4D4C]/75 leading-relaxed font-light mb-8">
+              Chaque détail est pensé pour honorer vos récits. L'intelligence artificielle se charge d'organiser vos souvenirs, de les mettre en forme avec élégance et de créer un chapitrage intelligent. Le résultat est un livre relié de qualité premium.
+            </p>
+            <ul className="space-y-4 text-[#3A3837] font-medium">
+              <li className="flex items-center gap-3">
+                <span className="w-8 h-8 rounded-full bg-[#E5C5C5]/30 flex items-center justify-center text-[#B58B8C]">✔</span>
+                Mise en forme littéraire automatique
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="w-8 h-8 rounded-full bg-[#C2BDE0]/30 flex items-center justify-center text-[#8C8AAD]">✔</span>
+                Intégration de vos photos d'époque
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="w-8 h-8 rounded-full bg-[#A3C6A4]/30 flex items-center justify-center text-[#739274]">✔</span>
+                Impression premium à couverture rigide
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 5 : Sécurité */}
+      <section className="relative z-10 py-20">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-white/60 backdrop-blur-sm rounded-full mb-6 border border-white shadow-sm">
+            <svg className="w-8 h-8 text-[#4F4D4C]/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl lg:text-3xl font-serif text-[#3A3837] mb-4">Vos souvenirs, votre intimité.</h2>
+          <p className="text-[#4F4D4C]/75 leading-relaxed font-light mx-auto max-w-2xl">
+            Vos récits restent strictement confidentiels. Notre technologie d'IA traite vos histoires de manière sécurisée et isolée et à aucun moment elles ne servent à entraîner des modèles publics. L'héritage de votre famille vous appartient.
+          </p>
+        </div>
+      </section>
+
+      {/* SECTION 6 : Footer */}
+      <footer className="relative z-10 bg-[#3A3837] pt-24 pb-10 text-white flex flex-col items-center">
+         <div className="absolute top-0 w-full h-24 bg-gradient-to-b from-[#F4F1EE] to-transparent opacity-10"></div>
+         <div className="text-center px-6 mb-16 w-full max-w-3xl relative z-10">
+           <h2 className="text-3xl sm:text-4xl font-serif mb-8 text-white">Faites partie de nos premiers explorateurs.</h2>
+           <button
+              onClick={() => setIsModalOpen(true)}
+              className="px-10 py-5 bg-white text-[#3A3837] rounded-full font-medium text-lg shadow-xl hover:bg-[#F4F1EE] hover:-translate-y-1 transition-all duration-300"
+            >
+              Rejoindre l'avant-première
+            </button>
+         </div>
+         <div className="w-full max-w-7xl mx-auto border-t border-white/10 px-6 pt-10 flex flex-col justify-center items-center text-white/50 text-sm font-light">
+           <div className="mb-4 sm:mb-0">
+             © {new Date().getFullYear()} MyMémoires. Tous droits réservés.
+           </div>
+         </div>
+      </footer>
 
       {/* --- POP-IN MODAL --- */}
       {isModalOpen && (
