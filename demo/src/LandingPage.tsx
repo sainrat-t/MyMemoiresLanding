@@ -273,18 +273,18 @@ const LandingPage: React.FC = () => {
             {/* Titre Principal */}
             <h1 className="text-[3rem] xs:text-[3.5rem] sm:text-[4rem] lg:text-[4.5rem] font-serif text-[#3A3837] mb-6 leading-[1.05] tracking-tight relative">
               <span className="relative z-10">
-                Le premier biographe<br />
+                Le biographe virtuel<br />
                 qui <span className="text-[#C2BDE0] italic font-light relative">
-                  écoute
+                  donne vie
                   <span className="absolute -bottom-2 lg:-bottom-3 left-0 w-full h-2 lg:h-3 bg-[#E1E0F5]/50 -z-10 rounded-sm skew-x-[-12deg]"></span>
                 </span><br />
-                vos souvenirs.
+                à votre voix.
               </span>
             </h1>
 
             {/* Description */}
             <p className="text-lg sm:text-[21px] text-[#4F4D4C]/75 mb-10 max-w-[480px] leading-[1.6] font-light">
-               Ne laissez plus vos histoires se perdre. MyMémoires transforme vos mots en un magnifique héritage familial, simplement en parlant.
+              Transformez de simples conversations en un magnifique héritage familial. Vous partagez vos souvenirs, MyMémoires s'occupe de l'écriture et de la mise en page.
             </p>
 
             {/* Bouton d'action principal */}
@@ -388,9 +388,9 @@ const LandingPage: React.FC = () => {
       <section className="relative z-10 py-24 bg-white/40 backdrop-blur-xl border-y border-white/60">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full flex flex-col lg:flex-row items-center gap-16">
           <div className="w-full lg:w-1/2 order-2 lg:order-1">
-            <img 
-              src="/images/hero.png" 
-              alt="Personne senior souriante admirant le livre de ses mémoires" 
+            <img
+              src="/images/hero.png"
+              alt="Personne senior souriante admirant le livre de ses mémoires"
               className="w-full h-auto rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] transform transition-transform duration-700 hover:scale-[1.02] border border-white"
             />
           </div>
@@ -422,7 +422,7 @@ const LandingPage: React.FC = () => {
         <div className="max-w-4xl mx-auto px-6 text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-white/60 backdrop-blur-sm rounded-full mb-6 border border-white shadow-sm">
             <svg className="w-8 h-8 text-[#4F4D4C]/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
           </div>
           <h2 className="text-2xl lg:text-3xl font-serif text-[#3A3837] mb-4">Vos souvenirs, votre intimité.</h2>
@@ -434,21 +434,21 @@ const LandingPage: React.FC = () => {
 
       {/* SECTION 6 : Footer */}
       <footer className="relative z-10 bg-[#3A3837] pt-24 pb-10 text-white flex flex-col items-center">
-         <div className="absolute top-0 w-full h-24 bg-gradient-to-b from-[#F4F1EE] to-transparent opacity-10"></div>
-         <div className="text-center px-6 mb-16 w-full max-w-3xl relative z-10">
-           <h2 className="text-3xl sm:text-4xl font-serif mb-8 text-white">Faites partie de nos premiers explorateurs.</h2>
-           <button
-              onClick={() => setIsModalOpen(true)}
-              className="px-10 py-5 bg-white text-[#3A3837] rounded-full font-medium text-lg shadow-xl hover:bg-[#F4F1EE] hover:-translate-y-1 transition-all duration-300"
-            >
-              Rejoindre l'avant-première
-            </button>
-         </div>
-         <div className="w-full max-w-7xl mx-auto border-t border-white/10 px-6 pt-10 flex flex-col justify-center items-center text-white/50 text-sm font-light">
-           <div className="mb-4 sm:mb-0">
-             © {new Date().getFullYear()} MyMémoires. Tous droits réservés.
-           </div>
-         </div>
+        <div className="absolute top-0 w-full h-24 bg-gradient-to-b from-[#F4F1EE] to-transparent opacity-10"></div>
+        <div className="text-center px-6 mb-16 w-full max-w-3xl relative z-10">
+          <h2 className="text-3xl sm:text-4xl font-serif mb-8 text-white">Faites partie de nos premiers explorateurs.</h2>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="px-10 py-5 bg-white text-[#3A3837] rounded-full font-medium text-lg shadow-xl hover:bg-[#F4F1EE] hover:-translate-y-1 transition-all duration-300"
+          >
+            Rejoindre l'avant-première
+          </button>
+        </div>
+        <div className="w-full max-w-7xl mx-auto border-t border-white/10 px-6 pt-10 flex flex-col justify-center items-center text-white/50 text-sm font-light">
+          <div className="mb-4 sm:mb-0">
+            © {new Date().getFullYear()} MyMémoires. Tous droits réservés.
+          </div>
+        </div>
       </footer>
 
       {/* --- POP-IN MODAL --- */}
