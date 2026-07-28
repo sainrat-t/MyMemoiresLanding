@@ -1,11 +1,11 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './b2c.css'
-import LandingB2C from './LandingB2C.tsx'
+import './index.css'
+import LandingPage from './LandingPage.tsx'
 
-// Racine du domaine : la page particuliers (cible SEO).
+// /ehpad : la page établissements (cible prospection).
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <LandingB2C />
+    <LandingPage />
   </StrictMode>,
 )

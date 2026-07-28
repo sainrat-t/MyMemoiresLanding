@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/pro", "destination": "/ehpad", "permanent": true }
+  ]
+}

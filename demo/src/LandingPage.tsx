@@ -1,216 +1,111 @@
-import React, { useState } from 'react';
-
-const SvgIllustration: React.FC = () => (
-  // Drop-shadow is kept but adjusted to not clip
-  <svg viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto drop-shadow-[0_10px_30px_rgba(79,77,76,0.08)]">
-    <defs>
-      <filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="120%">
-        <feDropShadow dx="0" dy="12" stdDeviation="20" floodColor="#4F4D4C" floodOpacity="0.06" />
-      </filter>
-
-      <filter id="blur-lg" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="40" />
-      </filter>
-
-      {/* Gradients */}
-      <linearGradient id="stream-pink" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stopColor="#E5C5C5" stopOpacity="0" />
-        <stop offset="20%" stopColor="#E5C5C5" stopOpacity="1" />
-        <stop offset="80%" stopColor="#E5C5C5" stopOpacity="1" />
-        <stop offset="100%" stopColor="#E5C5C5" stopOpacity="0" />
-      </linearGradient>
-
-      <linearGradient id="stream-purple" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stopColor="#C2BDE0" stopOpacity="0" />
-        <stop offset="20%" stopColor="#C2BDE0" stopOpacity="1" />
-        <stop offset="80%" stopColor="#C2BDE0" stopOpacity="1" />
-        <stop offset="100%" stopColor="#C2BDE0" stopOpacity="0" />
-      </linearGradient>
-
-      <linearGradient id="stream-green" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stopColor="#A3C6A4" stopOpacity="0" />
-        <stop offset="20%" stopColor="#A3C6A4" stopOpacity="1" />
-        <stop offset="80%" stopColor="#A3C6A4" stopOpacity="1" />
-        <stop offset="100%" stopColor="#A3C6A4" stopOpacity="0" />
-      </linearGradient>
-
-      <linearGradient id="stream-yellow" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stopColor="#E2C792" stopOpacity="0" />
-        <stop offset="20%" stopColor="#E2C792" stopOpacity="1" />
-        <stop offset="80%" stopColor="#E2C792" stopOpacity="1" />
-        <stop offset="100%" stopColor="#E2C792" stopOpacity="0" />
-      </linearGradient>
-
-      <style>{`
-        .bg-color { fill: transparent; }
-        .dark-stroke { stroke: #4F4D4C; }
-        
-        .draw {
-          stroke-dasharray: 200;
-          stroke-dashoffset: 200;
-          animation: drawLine 12s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
-        }
-
-        @keyframes drawLine {
-          0%, 5% { stroke-dashoffset: 200; opacity: 0; }
-          10% { opacity: 1; }
-          25%, 80% { stroke-dashoffset: 0; opacity: 1; }
-          85%, 100% { stroke-dashoffset: -200; opacity: 0; }
-        }
-
-        .fade-up {
-          animation: fadeUpAnim 12s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
-          transform-origin: center;
-        }
-
-        @keyframes fadeUpAnim {
-          0%, 20% { opacity: 0; transform: translateY(16px); }
-          30%, 80% { opacity: 1; transform: translateY(0); }
-          90%, 100% { opacity: 0; transform: translateY(-16px); }
-        }
-
-        .float {
-          animation: hoverFloat 8s ease-in-out infinite;
-        }
-
-        @keyframes hoverFloat {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-8px) rotate(0.5deg); }
-        }
-
-        .flow {
-          animation: streamFlow 2s linear infinite;
-        }
-
-        @keyframes streamFlow {
-          to { stroke-dashoffset: -36; }
-        }
-
-        .eq-bar {
-          transform-box: fill-box;
-          transform-origin: center;
-          animation: eqBounce 1.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes eqBounce {
-          0% { transform: scaleY(0.4); opacity: 0.6; }
-          100% { transform: scaleY(1); opacity: 1; }
-        }
-
-        .pulse {
-          transform-box: fill-box;
-          transform-origin: center;
-          animation: lightPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes lightPulse {
-          0%, 100% { transform: scale(0.85); opacity: 0.5; }
-          50% { transform: scale(1.1); opacity: 1; }
-        }
-
-        .twinkle {
-          transform-box: fill-box;
-          transform-origin: center;
-          animation: twinkleAnim 5s ease-in-out infinite;
-        }
-
-        @keyframes twinkleAnim {
-          0%, 100% { transform: scale(0.5) rotate(0deg); opacity: 0.2; }
-          50% { transform: scale(1.1) rotate(45deg); opacity: 0.9; }
-        }
-      `}</style>
-    </defs>
-
-    <rect width="100%" height="100%" className="bg-color" />
-
-    {/* Forms ambiantes internes au SVG */}
-    <circle cx="150" cy="150" r="180" fill="#E5C5C5" opacity="0.10" filter="url(#blur-lg)" />
-    <circle cx="850" cy="450" r="220" fill="#A3C6A4" opacity="0.08" filter="url(#blur-lg)" />
-    <circle cx="500" cy="500" r="160" fill="#E2C792" opacity="0.06" filter="url(#blur-lg)" />
-
-    <g id="microphone-system">
-      <g className="eq">
-        <rect x="136" y="180" width="6" height="20" rx="3" fill="#E5C5C5" className="eq-bar" style={{ animationDelay: '0.1s' }} />
-        <rect x="148" y="165" width="6" height="50" rx="3" fill="#C2BDE0" className="eq-bar" style={{ animationDelay: '0.4s' }} />
-        <rect x="160" y="150" width="6" height="80" rx="3" fill="#A3C6A4" className="eq-bar" style={{ animationDelay: '0.2s' }} />
-        <rect x="172" y="170" width="6" height="40" rx="3" fill="#E2C792" className="eq-bar" style={{ animationDelay: '0.5s' }} />
-      </g>
-
-      <rect x="165" y="380" width="90" height="6" rx="3" fill="#B5ADA6" />
-      <line x1="210" y1="380" x2="210" y2="280" stroke="#B5ADA6" strokeWidth="6" strokeLinecap="round" />
-
-      <path d="M 180 230 A 30 30 0 0 0 240 230" fill="none" stroke="#8A8582" strokeWidth="4" strokeLinecap="round" />
-      <circle cx="180" cy="230" r="4.5" fill="#8A8582" />
-      <circle cx="240" cy="230" r="4.5" fill="#8A8582" />
-
-      <rect x="190" y="140" width="40" height="100" rx="20" fill="#FFFFFF" className="dark-stroke" strokeWidth="2.5" filter="url(#soft-shadow)" />
-
-      <line x1="190" y1="185" x2="230" y2="185" className="dark-stroke" strokeWidth="2.5" />
-
-      <circle cx="210" cy="215" r="4" fill="#D1A3A4" className="pulse" />
-    </g>
-
-    <g id="memory-streams">
-      <path d="M 235 170 C 320 120, 420 180, 540 220" fill="none" stroke="url(#stream-pink)" strokeWidth="5" strokeLinecap="round" strokeDasharray="12 24" className="flow" />
-      <path d="M 235 185 C 380 130, 480 300, 750 220" fill="none" stroke="url(#stream-purple)" strokeWidth="4" strokeLinecap="round" strokeDasharray="8 20" className="flow" style={{ animationDelay: '-0.5s' }} />
-      <path d="M 235 200 C 350 250, 420 280, 540 290" fill="none" stroke="url(#stream-green)" strokeWidth="4.5" strokeLinecap="round" strokeDasharray="10 22" className="flow" style={{ animationDelay: '-1.0s' }} />
-      <path d="M 235 215 C 380 350, 520 380, 750 350" fill="none" stroke="url(#stream-yellow)" strokeWidth="4" strokeLinecap="round" strokeDasharray="14 26" className="flow" style={{ animationDelay: '-0.2s' }} />
-
-      <path d="M 330 116 L 330 124 M 326 120 L 334 120" stroke="#D1A3A4" strokeWidth="2" strokeLinecap="round" className="twinkle" style={{ animationDelay: '0s' }} />
-      <circle cx="480" cy="180" r="3" fill="#C2BDE0" className="twinkle" style={{ animationDelay: '1.2s' }} />
-      <path d="M 400 306 L 400 314 M 396 310 L 404 310" stroke="#E2C792" strokeWidth="2" strokeLinecap="round" className="twinkle" style={{ animationDelay: '2.5s' }} />
-      <circle cx="600" cy="140" r="3.5" fill="#A3C6A4" className="twinkle" style={{ animationDelay: '0.7s' }} />
-    </g>
-
-    <g className="float">
-      <rect x="520" y="140" width="420" height="320" rx="20" fill="#FFFFFF" filter="url(#soft-shadow)" />
-      <line x1="730" y1="140" x2="730" y2="460" stroke="#F4F1EE" strokeWidth="1.5" />
-
-      <g id="left-page-content">
-        <line x1="572" y1="190" x2="618" y2="190" stroke="#E5C5C5" strokeWidth="24" strokeLinecap="round" className="draw" style={{ animationDelay: '0.5s' }} />
-        <line x1="578" y1="190" x2="602" y2="190" stroke="#B58B8C" strokeWidth="4" strokeLinecap="round" className="draw" style={{ animationDelay: '0.7s' }} />
-
-        <line x1="656" y1="190" x2="692" y2="190" stroke="#D3E0D4" strokeWidth="24" strokeLinecap="round" className="draw" style={{ animationDelay: '0.9s' }} />
-        <line x1="662" y1="190" x2="682" y2="190" stroke="#8DAA8E" strokeWidth="4" strokeLinecap="round" className="draw" style={{ animationDelay: '1.1s' }} />
-
-        <line x1="568" y1="240" x2="672" y2="240" stroke="#4F4D4C" strokeWidth="16" strokeLinecap="round" className="draw" style={{ animationDelay: '1.5s' }} />
-
-        <line x1="564" y1="280" x2="696" y2="280" stroke="#A8A3A1" strokeWidth="6" strokeLinecap="round" className="draw" style={{ animationDelay: '2.0s' }} />
-        <line x1="564" y1="304" x2="666" y2="304" stroke="#A8A3A1" strokeWidth="6" strokeLinecap="round" className="draw" style={{ animationDelay: '2.2s' }} />
-        <line x1="564" y1="328" x2="686" y2="328" stroke="#A8A3A1" strokeWidth="6" strokeLinecap="round" className="draw" style={{ animationDelay: '2.4s' }} />
-        <line x1="564" y1="352" x2="636" y2="352" stroke="#A8A3A1" strokeWidth="6" strokeLinecap="round" className="draw" style={{ animationDelay: '2.6s' }} />
-
-        <line x1="562" y1="386" x2="600" y2="386" stroke="#DCD8D5" strokeWidth="4" strokeLinecap="round" className="draw" style={{ animationDelay: '2.8s' }} />
-      </g>
-
-      <g id="right-page-content">
-        <g className="fade-up" style={{ animationDelay: '2.5s' }}>
-          <rect x="750" y="174" width="160" height="110" rx="12" fill="#F4F1EE" />
-          <path d="M 750 240 Q 790 200 840 240 T 910 210 L 910 284 L 750 284 Z" fill="#E1E0F5" />
-          <path d="M 750 260 Q 810 230 860 270 T 910 250 L 910 284 L 750 284 Z" fill="#C2BDE0" opacity="0.6" />
-        </g>
-
-        <line x1="756" y1="316" x2="844" y2="316" stroke="#4F4D4C" strokeWidth="10" strokeLinecap="round" className="draw" style={{ animationDelay: '3.2s' }} />
-
-        <line x1="754" y1="344" x2="886" y2="344" stroke="#A8A3A1" strokeWidth="6" strokeLinecap="round" className="draw" style={{ animationDelay: '3.5s' }} />
-        <line x1="754" y1="364" x2="846" y2="364" stroke="#A8A3A1" strokeWidth="6" strokeLinecap="round" className="draw" style={{ animationDelay: '3.7s' }} />
-
-        <line x1="764" y1="410" x2="836" y2="410" stroke="#D1A3A4" strokeWidth="24" strokeLinecap="round" className="draw" style={{ animationDelay: '4.2s' }} />
-        <line x1="778" y1="410" x2="816" y2="410" stroke="#FFFFFF" strokeWidth="4" strokeLinecap="round" className="draw" style={{ animationDelay: '4.5s' }} />
-      </g>
-    </g>
-  </svg >
-);
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 
 const LandingPage: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'submitted'>('idle');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // Chrono Time State
+  const [chronoTime, setChronoTime] = useState('0:00');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Typing effect text State
+  const [typedText, setTypedText] = useState('');
+
+  // Form States
+  const [nom, setNom] = useState('');
+  const [fonction, setFonction] = useState('Direction d\'établissement');
+  const [etab, setEtab] = useState('');
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'loading' | 'submitted'>('idle');
+
+  const emailInputRef = useRef<HTMLInputElement>(null);
+
+  // Generate stable waveform bar styles on mount
+  const waveformBars = useMemo(() => {
+    return Array.from({ length: 42 }).map(() => ({
+      animationDelay: `${Math.random() * -1.1}s`,
+      height: `${25 + Math.random() * 70}%`
+    }));
+  }, []);
+
+  // 1. Chrono Timer Effect
+  useEffect(() => {
+    const reduit = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduit) {
+      setChronoTime('2:14');
+      return;
+    }
+
+    let sec = 0;
+    const interval = setInterval(() => {
+      sec = (sec + 1) % 135;
+      const minutes = Math.floor(sec / 60);
+      const seconds = `0${sec % 60}`.slice(-2);
+      setChronoTime(`${minutes}:${seconds}`);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // 2. Typing Effect for Jeanne's story
+  useEffect(() => {
+    const fullText = "Avril 1957, l'imprimerie de la rue des Carmes. Jeanne a dix-sept ans et les mains pleines d'encre. Le patron l'accueille d'une phrase qu'elle n'oubliera jamais : « Petite, ici, on n'imprime pas des pages, on imprime des vies. » Quarante ans durant, elle prendra ces mots au pied de la lettre.";
+    const reduit = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduit) {
+      setTypedText(fullText);
+      return;
+    }
+
+    let i = 0;
+    let timerId: ReturnType<typeof setTimeout>;
+
+    const ecrire = () => {
+      if (i <= fullText.length) {
+        setTypedText(fullText.slice(0, i));
+        i++;
+        timerId = setTimeout(ecrire, 22 + Math.random() * 26);
+      }
+    };
+
+    const startTimer = setTimeout(ecrire, 900);
+
+    return () => {
+      clearTimeout(startTimer);
+      clearTimeout(timerId);
+    };
+  }, []);
+
+  // 3. Scroll Reveal Animation using IntersectionObserver
+  useEffect(() => {
+    const reduit = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const revealElements = document.querySelectorAll('.reveal');
+
+    if ('IntersectionObserver' in window && !reduit) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('vu');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      revealElements.forEach((el) => observer.observe(el));
+      return () => observer.disconnect();
+    } else {
+      revealElements.forEach((el) => el.classList.add('vu'));
+    }
+  }, []);
+
+  // 4. Form Submit Handler
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setEmailError(false);
+
+    if (!email || email.indexOf('@') === -1) {
+      setEmailError(true);
+      emailInputRef.current?.focus();
+      return;
+    }
+
     setStatus('loading');
 
     try {
@@ -219,15 +114,15 @@ const LandingPage: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ firstName, lastName, email }),
+        body: JSON.stringify({ nom, fonction, etab, email }),
       });
 
       if (response.ok) {
         setStatus('submitted');
       } else {
-        console.error('Erreur lors de la souscription');
+        console.error('Erreur lors de la soumission du formulaire');
         setStatus('idle');
-        alert("Une erreur s'est produite lors de l'inscription. Veuillez réessayer.");
+        alert("Une erreur s'est produite lors de l'envoi de votre demande. Veuillez réessayer.");
       }
     } catch (error) {
       console.error('Erreur réseau:', error);
@@ -236,376 +131,284 @@ const LandingPage: React.FC = () => {
     }
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    if (status === 'submitted') {
-      setStatus('idle');
-      setEmail('');
-      setFirstName('');
-      setLastName('');
-    }
-  };
-
   return (
-    <div className="min-h-[100dvh] bg-[#F4F1EE] overflow-x-hidden relative font-sans selection:bg-[#E5C5C5] selection:text-[#4F4D4C]">
+    <>
+      <header>
+        <nav className="nav" aria-label="Navigation principale">
+          <a className="logo" href="#">
+            <img className="logo-mark" src="/logo-mark.png" alt="" aria-hidden="true" />
+            <span className="mot">My<em>Mémoires</em></span>
+            <span className="pro">Pour les EHPAD</span>
+          </a>
+          <ul className="nav-links">
+            <li><a href="#methode">Comment ça marche</a></li>
+            <li><a href="#fonctions">L'application</a></li>
+            <li><a href="#confiance">IA &amp; conformité</a></li>
+            <li><a href="#demo">Contact</a></li>
+          </ul>
+          <a className="btn btn-encre nav-cta" href="#demo">
+            <span className="cta-long">Demander une démonstration</span>
+            <span className="cta-court">Démo</span>
+          </a>
+        </nav>
+      </header>
 
-      {/* --- AMBIENT BLOBS --- */}
-      {/* Conservés de manière absolue en plein écran pour la douceur */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-1/4 -left-32 sm:left-1/4 w-[28rem] h-[28rem] bg-[#E5C5C5] rounded-full mix-blend-multiply blur-[100px] opacity-40 animate-pulse"></div>
-        <div className="absolute top-1/2 -right-20 lg:right-1/4 w-[32rem] h-[32rem] bg-[#E1E0F5] rounded-full mix-blend-multiply blur-[120px] opacity-50" style={{ animation: 'pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite 1s' }}></div>
-        <div className="absolute -bottom-20 left-1/2 w-[24rem] h-[24rem] bg-[#C2BDE0] rounded-full mix-blend-multiply blur-[90px] opacity-35 transform -translate-x-1/2"></div>
-      </div>
-
-      {/* SECTION 1: Hero */}
-      <div className="relative z-10 w-full min-h-[100dvh] flex flex-col lg:flex-row items-center justify-center lg:justify-start max-w-7xl mx-auto pb-12 lg:pb-0">
-        <div className="w-full lg:w-[55%] flex flex-col justify-center px-6 sm:px-12 lg:px-16 pt-20 sm:pt-24 lg:pt-0 z-30">
-          <div className="max-w-[540px] w-full mt-4 lg:mt-0 mx-auto lg:mx-0">
-            {/* Badge Bientôt disponible */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 mb-8 text-[13px] font-medium tracking-wide text-[#3A3837] bg-white/50 rounded-full border border-white/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] backdrop-blur-md">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E5C5C5] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#D1A3A4]"></span>
-              </span>
-              Bientôt disponible
-            </div>
-
-            {/* Titre Principal */}
-            <h1 className="text-[3rem] xs:text-[3.5rem] sm:text-[4rem] lg:text-[4.5rem] font-serif text-[#3A3837] mb-6 leading-[1.05] tracking-tight relative">
-              <span className="relative z-10">
-                Le biographe virtuel<br />
-                qui <span className="text-[#C2BDE0] italic font-light relative">
-                  donne vie
-                  <span className="absolute -bottom-2 lg:-bottom-3 left-0 w-full h-2 lg:h-3 bg-[#E1E0F5]/50 -z-10 rounded-sm skew-x-[-12deg]"></span>
-                </span><br />
-                à votre voix.
-              </span>
-            </h1>
-
-            {/* Description */}
-            <p className="text-lg sm:text-[21px] text-[#4F4D4C]/75 mb-10 max-w-[480px] leading-[1.6] font-light">
-              Transformez de simples conversations en un magnifique héritage familial. Vous partagez vos souvenirs, MyMémoires s'occupe de l'écriture et de la mise en page.
+      <main>
+        {/* HERO */}
+        <section className="hero">
+          <div>
+            <p className="eyebrow">L'application web des histoires de vie</p>
+            <h1>Vos équipes enregistrent. <em>L'IA écrit la biographie.</em></h1>
+            <p className="lead">
+              MyMémoires permet à vos équipes de recueillir les histoires de vie des résidents en quelques minutes d'enregistrement — pendant un atelier, un soin, un café. L'IA transcrit, rédige et organise la biographie en chapitres. Vos équipes relisent et valident. C'est tout.
             </p>
-
-            {/* Bouton d'action principal */}
-            <div className="w-full relative group z-20 mt-4">
-              <div className="relative w-full max-w-[420px]">
-                <button
-                  type="button"
-                  onClick={() => setIsModalOpen(true)}
-                  className="w-full bg-[#3A3837] text-white py-4 px-6 rounded-2xl md:rounded-full font-medium text-[15.5px] tracking-wide shadow-[0_4px_15px_rgba(58,56,55,0.15)] hover:bg-[#2A2928] hover:shadow-[0_6px_20px_rgba(58,56,55,0.25)] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-3 group/btn"
-                >
-                  S'inscrire à l'avant-première
-                  <svg className="w-5 h-5 opacity-70 group-hover/btn:opacity-100 group-hover/btn:translate-x-1 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </button>
-              </div>
+            <div className="hero-ctas">
+              <a className="btn btn-encre" href="#demo">Demander une démonstration</a>
+              <a className="btn btn-ghost" href="#methode">Voir comment ça marche</a>
             </div>
+            <p className="hero-note"><strong>Zéro rédaction pour vos équipes.</strong> Un téléphone ou une tablette suffit.</p>
           </div>
-        </div>
-        <div className="relative w-full lg:w-[45%] mt-12 sm:mt-16 lg:mt-0 flex items-center justify-center overflow-hidden lg:overflow-visible z-10 pointer-events-none lg:pointer-events-auto">
-          <div className="relative w-full max-w-full px-4 sm:px-0 sm:max-w-md lg:max-w-[45rem] transform transition-transform duration-1000 ease-out lg:hover:scale-[1.02] flex justify-center">
-            <SvgIllustration />
-          </div>
-        </div>
-      </div>
 
-      {/* SECTION 2 : Comment ça marche ? */}
-      <section className="relative z-10 py-24 bg-white/40 backdrop-blur-xl border-y border-white/60">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
-          <h2 className="text-[2.5rem] lg:text-[3rem] font-serif text-[#3A3837] mb-4">La magie d'un livre qui s'écrit tout seul</h2>
-          <p className="text-lg text-[#4F4D4C]/75 mb-20 max-w-2xl mx-auto font-light">
-            Oubliez la page blanche. Notre technologie s'efface pour laisser place à la discussion, comme avec un vieil ami.
-          </p>
-          <div className="grid md:grid-cols-3 gap-12 lg:gap-8">
-            <div className="flex flex-col items-center group">
-              <div className="w-20 h-20 rounded-[1.2rem] bg-white flex items-center justify-center mb-6 shadow-[0_4px_15px_rgba(0,0,0,0.03)] border border-white/50 group-hover:scale-105 transition-transform">
-                <svg className="w-10 h-10 text-[#4F4D4C]/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-medium text-[#3A3837] mb-3">1. Racontez</h3>
-              <p className="text-[#4F4D4C]/70 leading-relaxed font-light">
-                Ouvrez l'application et parlez comme vous le feriez avec un ami. Notre studio vocal enregistre vos souvenirs.
-              </p>
+          {/* Signature : la voix devient une page */}
+          <div className="app-mock" aria-label="Aperçu de l'application : un enregistrement devient un passage de biographie">
+            <div className="app-barre">
+              <i></i><i></i><i></i><span>app.mymemoires.com — Résidence Les Tilleuls</span>
             </div>
-            <div className="flex flex-col items-center group">
-              <div className="w-20 h-20 rounded-[1.2rem] bg-white flex items-center justify-center mb-6 shadow-[0_4px_15px_rgba(0,0,0,0.03)] border border-white/50 group-hover:scale-105 transition-transform">
-                <svg className="w-10 h-10 text-[#4F4D4C]/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-medium text-[#3A3837] mb-3">2. Laissez-vous guider</h3>
-              <p className="text-[#4F4D4C]/70 leading-relaxed font-light">
-                Une hésitation ? Notre IA bienveillante vous relance avec des questions pertinentes pour raviver vos mémoires.
-              </p>
-            </div>
-            <div className="flex flex-col items-center group">
-              <div className="w-20 h-20 rounded-[1.2rem] bg-white flex items-center justify-center mb-6 shadow-[0_4px_15px_rgba(0,0,0,0.03)] border border-white/50 group-hover:scale-105 transition-transform">
-                <svg className="w-10 h-10 text-[#4F4D4C]/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-medium text-[#3A3837] mb-3">3. Admirez votre livre</h3>
-              <p className="text-[#4F4D4C]/70 leading-relaxed font-light">
-                Vos paroles sont automatiquement transformées en chapitres littéraires. Commandez votre livre imprimé.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 3 : Personas */}
-      <section className="relative z-10 py-24">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <h2 className="text-[2.5rem] lg:text-[3rem] font-serif text-[#3A3837] text-center mb-16">Chaque histoire mérite d'être conservée</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white/80 backdrop-blur-md p-10 rounded-[2rem] border border-white shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] hover:-translate-y-2 transition-transform duration-300">
-              <h3 className="text-2xl font-serif text-[#3A3837] mb-4">Pour les Familles</h3>
-              <p className="text-[#4F4D4C]/75 leading-relaxed font-light">
-                Préservez l'héritage immatériel de vos parents et grands-parents. Offrez-leur l'opportunité de se raconter et de laisser une trace impérissable pour les générations futures.
-              </p>
-            </div>
-            <div className="bg-white/80 backdrop-blur-md p-10 rounded-[2rem] border border-white shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] hover:-translate-y-2 transition-transform duration-300">
-              <h3 className="text-2xl font-serif text-[#3A3837] mb-4">Pour les Seniors</h3>
-              <p className="text-[#4F4D4C]/75 leading-relaxed font-light">
-                Laissez une trace indélébile de votre parcours, sans affronter l'angoisse de la page blanche. Racontez vos anecdotes à votre rythme et voyez votre vie devenir roman.
-              </p>
-            </div>
-            <div className="bg-[#3A3837] p-10 rounded-[2rem] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.15)] hover:-translate-y-2 transition-transform duration-300 text-white relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-[#4F4D4C] rounded-full blur-3xl opacity-50 pointer-events-none"></div>
-              <h3 className="text-2xl font-serif mb-4 relative z-10">Pour les Aidants</h3>
-              <p className="text-white/80 leading-relaxed font-light relative z-10">
-                Valorisez l'identité de vos résidents à travers des séances de thérapie par la réminiscence simples à animer, aboutissant sur un objet physique de grande fierté.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 4 : Résultat */}
-      <section className="relative z-10 py-24 bg-white/40 backdrop-blur-xl border-y border-white/60">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full flex flex-col lg:flex-row items-center gap-16">
-          <div className="w-full lg:w-1/2 order-2 lg:order-1">
-            <img
-              src="/images/hero.png"
-              alt="Personne senior souriante admirant le livre de ses mémoires"
-              className="w-full h-auto rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] transform transition-transform duration-700 hover:scale-[1.02] border border-white"
-            />
-          </div>
-          <div className="w-full lg:w-1/2 order-1 lg:order-2">
-            <h2 className="text-3xl sm:text-4xl lg:text-[3.5rem] leading-[1.1] font-serif text-[#3A3837] mb-6">Le livre que vous tenez entre vos mains.</h2>
-            <p className="text-lg text-[#4F4D4C]/75 leading-relaxed font-light mb-8">
-              Chaque détail est pensé pour honorer vos récits. L'intelligence artificielle se charge d'organiser vos souvenirs, de les mettre en forme avec élégance et de créer un chapitrage intelligent. Le résultat est un livre relié de qualité premium.
-            </p>
-            <ul className="space-y-4 text-[#3A3837] font-medium">
-              <li className="flex items-center gap-3">
-                <span className="w-8 h-8 rounded-full bg-[#E5C5C5]/30 flex items-center justify-center text-[#B58B8C]">✔</span>
-                Mise en forme littéraire automatique
-              </li>
-              <li className="flex items-center gap-3">
-                <span className="w-8 h-8 rounded-full bg-[#C2BDE0]/30 flex items-center justify-center text-[#8C8AAD]">✔</span>
-                Intégration de vos photos d'époque
-              </li>
-              <li className="flex items-center gap-3">
-                <span className="w-8 h-8 rounded-full bg-[#A3C6A4]/30 flex items-center justify-center text-[#739274]">✔</span>
-                Impression premium à couverture rigide
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 5 : Sécurité */}
-      <section className="relative z-10 py-20">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-white/60 backdrop-blur-sm rounded-full mb-6 border border-white shadow-sm">
-            <svg className="w-8 h-8 text-[#4F4D4C]/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-          </div>
-          <h2 className="text-2xl lg:text-3xl font-serif text-[#3A3837] mb-4">Vos souvenirs, votre intimité.</h2>
-          <p className="text-[#4F4D4C]/75 leading-relaxed font-light mx-auto max-w-2xl">
-            Vos récits restent strictement confidentiels. Notre technologie d'IA traite vos histoires de manière sécurisée et isolée et à aucun moment elles ne servent à entraîner des modèles publics. L'héritage de votre famille vous appartient.
-          </p>
-        </div>
-      </section>
-
-      {/* SECTION 6 : Footer */}
-      <footer className="relative z-10 bg-[#3A3837] pt-24 pb-10 text-white flex flex-col items-center">
-        <div className="absolute top-0 w-full h-24 bg-gradient-to-b from-[#F4F1EE] to-transparent opacity-10"></div>
-        <div className="text-center px-6 mb-16 w-full max-w-3xl relative z-10">
-          <h2 className="text-3xl sm:text-4xl font-serif mb-8 text-white">Faites partie de nos premiers explorateurs.</h2>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="px-10 py-5 bg-white text-[#3A3837] rounded-full font-medium text-lg shadow-xl hover:bg-[#F4F1EE] hover:-translate-y-1 transition-all duration-300"
-          >
-            Rejoindre l'avant-première
-          </button>
-        </div>
-        <div className="w-full max-w-7xl mx-auto border-t border-white/10 px-6 pt-10 flex flex-col justify-center items-center text-white/50 text-sm font-light">
-          <div className="mb-4 sm:mb-0">
-            © {new Date().getFullYear()} MyMémoires. Tous droits réservés.
-          </div>
-        </div>
-      </footer>
-
-      {/* --- POP-IN MODAL --- */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto w-full min-h-screen">
-
-          {/* Overlay flouté (Backdrop) */}
-          <div
-            className="fixed inset-0 bg-[#F4F1EE]/60 backdrop-blur-xl transition-opacity animate-in fade-in duration-300"
-            onClick={closeModal}
-          ></div>
-
-          {/* Modal Container */}
-          <div className="relative w-full max-w-[480px] bg-white/70 backdrop-blur-2xl rounded-[32px] sm:rounded-[36px] border border-white/80 shadow-[0_20px_60px_rgba(0,0,0,0.06),0_1px_3px_rgba(255,255,255,0.4)_inset] overflow-hidden my-auto animate-in zoom-in-95 fade-in duration-300 slide-in-from-bottom-4">
-
-            {/* Bouton Fermer */}
-            <button
-              onClick={closeModal}
-              className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center rounded-full bg-black/5 hover:bg-black/10 text-black/40 hover:text-black/80 transition-colors z-20"
-              aria-label="Fermer"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-
-            {/* Contenu */}
-            <div className="p-8 sm:p-10 relative z-10">
-
-              {/* Effet lumineux décoratif dans la modale */}
-              <div className="absolute -top-24 -left-24 w-48 h-48 bg-[#E5C5C5] rounded-full mix-blend-multiply filter blur-[50px] opacity-40 pointer-events-none"></div>
-
-              {status === 'submitted' ? (
-                /* ÉTAPE SUCCÈS */
-                <div className="text-center animate-in fade-in zoom-in-95 duration-500 py-6">
-                  <div className="mx-auto flex items-center justify-center w-16 h-16 rounded-full bg-green-50/50 mb-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
-                    <svg className="w-8 h-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <h3 className="text-2xl font-serif text-[#3A3837] mb-3">
-                    Bientôt avec nous !
-                  </h3>
-                  <p className="text-[16px] text-[#4F4D4C]/80 leading-relaxed mb-8 font-light">
-                    Merci <span className="font-medium text-[#4F4D4C]">{firstName}</span> ! Votre inscription est bien confirmée. Vous recevrez un e-mail prochainement.
-                  </p>
-                  <button
-                    onClick={closeModal}
-                    className="w-full bg-white text-[#3A3837] border border-black/10 py-3.5 px-6 rounded-2xl font-medium text-[15px] shadow-sm hover:bg-gray-50 hover:border-black/20 transition-all hover:shadow-[0_2px_10px_rgba(0,0,0,0.05)]"
-                  >
-                    Fermer
-                  </button>
+            <div className="app-corps">
+              <div className="fiche-resident">
+                <span className="avatar">JL</span>
+                <div>
+                  <b>Jeanne Lacombe, 86 ans</b>
+                  <span>Biographie en cours — Chapitre III, Le métier</span>
                 </div>
-              ) : (
-                /* FORMULAIRE */
-                <div className="animate-in fade-in duration-500 relative">
-                  <h2 className="text-[28px] leading-[1.1] font-serif text-[#3A3837] mb-3 pr-6">
-                    Rejoignez l'aventure
-                  </h2>
-                  <p className="text-[15.5px] text-[#4F4D4C]/70 mb-8 font-light pr-4 leading-relaxed">
-                    Laissez-nous vos coordonnées pour être informé en priorité du lancement de MyMémoires.
-                  </p>
+              </div>
 
-                  <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <div className="enregistrement">
+                <span className="bouton-rec" aria-hidden="true"></span>
+                <span className="onde" id="onde" aria-hidden="true">
+                  {waveformBars.map((bar, idx) => (
+                    <i key={idx} style={{ animationDelay: bar.animationDelay, height: bar.height }} />
+                  ))}
+                </span>
+                <time id="chrono">{chronoTime}</time>
+              </div>
 
-                    <div className="flex flex-col sm:flex-row gap-4">
-                      {/* Prénom */}
-                      <div className="flex-1 relative group/input">
-                        <label htmlFor="firstName" className="sr-only">Prénom</label>
-                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#4F4D4C]/30 group-focus-within/input:text-[#4F4D4C]/70 transition-colors">
-                          <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                          </svg>
-                        </div>
-                        <input
-                          type="text"
-                          id="firstName"
-                          value={firstName}
-                          onChange={(e) => setFirstName(e.target.value)}
-                          placeholder="Prénom"
-                          required
-                          className="w-full pl-10 pr-4 py-3.5 rounded-2xl bg-white/60 border border-white/60 hover:border-white/80 shadow-[0_2px_8px_rgba(0,0,0,0.02),0_1px_1px_rgba(255,255,255,1)_inset] text-[15px] text-[#3A3837] placeholder:text-[#4F4D4C]/40 focus:outline-none focus:ring-2 focus:ring-[#E5C5C5] focus:bg-white/90 focus:border-transparent transition-all font-light"
-                        />
-                      </div>
+              <p className="fleche-ia">L'IA transcrit &amp; rédige</p>
 
-                      {/* Nom */}
-                      <div className="flex-1 relative group/input">
-                        <label htmlFor="lastName" className="sr-only">Nom</label>
-                        <input
-                          type="text"
-                          id="lastName"
-                          value={lastName}
-                          onChange={(e) => setLastName(e.target.value)}
-                          placeholder="Nom"
-                          required
-                          className="w-full px-4 py-3.5 rounded-2xl bg-white/60 border border-white/60 hover:border-white/80 shadow-[0_2px_8px_rgba(0,0,0,0.02),0_1px_1px_rgba(255,255,255,1)_inset] text-[15px] text-[#3A3837] placeholder:text-[#4F4D4C]/40 focus:outline-none focus:ring-2 focus:ring-[#E5C5C5] focus:bg-white/90 focus:border-transparent transition-all font-light"
-                        />
-                      </div>
-                    </div>
+              <div className="bio-page">
+                <h4>Chapitre III — Le métier</h4>
+                <p className="bio-texte">
+                  <span id="bio-vivante">{typedText}</span>
+                  <span className="curseur" aria-hidden="true"></span>
+                </p>
+                <div className="bio-pied">
+                  <span>Rédigé à partir de l'enregistrement du 12 juin · 2 min 14</span>
+                  <span className="valide">✓ Relu et validé par Claire, animatrice</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-                    {/* Email */}
-                    <div className="relative mt-1 group/input">
-                      <label htmlFor="email" className="sr-only">Adresse e-mail</label>
-                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#4F4D4C]/30 group-focus-within/input:text-[#4F4D4C]/70 transition-colors">
-                        <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                      </div>
-                      <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Thibaut@exemple.com"
-                        required
-                        className="w-full pl-10 pr-4 py-3.5 rounded-2xl bg-white/60 border border-white/60 hover:border-white/80 shadow-[0_2px_8px_rgba(0,0,0,0.02),0_1px_1px_rgba(255,255,255,1)_inset] text-[15px] text-[#3A3837] placeholder:text-[#4F4D4C]/40 focus:outline-none focus:ring-2 focus:ring-[#E5C5C5] focus:bg-white/90 focus:border-transparent transition-all font-light"
-                      />
-                    </div>
+        {/* STATS */}
+        <div className="bandeau">
+          <div className="bandeau-in">
+            <div className="stat"><b>2–3 min</b><span>d'enregistrement suffisent par anecdote</span></div>
+            <div className="stat"><b>0</b><span>rédaction demandée à vos équipes</span></div>
+            <div className="stat"><b>100 %</b><span>des récits relus et validés par un humain</span></div>
+            <div className="stat"><b>1 biographie</b><span>par résident, chapitre après chapitre</span></div>
+          </div>
+        </div>
 
-                    {/* Bouton Submit */}
-                    <button
-                      type="submit"
-                      disabled={status === 'loading'}
-                      className="w-full mt-4 bg-[#3A3837] text-white py-3.5 px-6 rounded-2xl md:rounded-full font-medium text-[15.5px] tracking-wide shadow-[0_4px_12px_rgba(58,56,55,0.15)] hover:bg-[#2A2928] hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-70 disabled:hover:translate-y-0 disabled:cursor-not-allowed flex items-center justify-center gap-3 group/submit"
+        {/* COMMENT ÇA MARCHE */}
+        <section className="methode" id="methode">
+          <div className="methode-in">
+            <h2 className="section-titre reveal">
+              Trois gestes séparent la voix d'un résident de <em>sa biographie</em>.
+            </h2>
+            <p className="sous reveal">
+              Vos équipes recueillent déjà ces histoires tous les jours, au détour d'un soin ou d'un atelier. MyMémoires fait en sorte qu'elles ne s'évaporent plus.
+            </p>
+
+            <div className="trio">
+              <article className="colonne reveal">
+                <span className="ruban" aria-hidden="true"></span>
+                <p className="pour">Geste 1 — l'équipe</p>
+                <h3>Enregistrez</h3>
+                <p>Depuis n'importe quel téléphone ou tablette de l'établissement, en un appui. Pendant un atelier mémoire, un soin, une visite famille. Les questions suggérées par l'app aident à lancer la conversation.</p>
+              </article>
+              <article className="colonne reveal">
+                <span className="ruban" aria-hidden="true"></span>
+                <p className="pour">Geste 2 — l'IA</p>
+                <h3>L'IA rédige</h3>
+                <p>L'enregistrement est transcrit puis réécrit en un texte fluide, fidèle aux mots et au ton du résident. Chaque récit rejoint automatiquement le bon chapitre de vie : l'enfance, le métier, les amours, les voyages.</p>
+              </article>
+              <article className="colonne reveal">
+                <span className="ruban" aria-hidden="true"></span>
+                <p className="pour">Geste 3 — l'équipe, encore</p>
+                <h3>Relisez, validez</h3>
+                <p>Rien n'est publié sans relecture. L'animateur corrige un prénom, retire un passage trop intime, valide. La biographie s'enrichit semaine après semaine — et peut être imprimée en livre relié.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        {/* L'APPLICATION */}
+        <section className="fonctions" id="fonctions">
+          <p className="eyebrow reveal">L'application</p>
+          <h2 className="section-titre reveal">
+            Pensée pour le quotidien d'un établissement, pas pour <em>des écrivains</em>.
+          </h2>
+          <p className="sous reveal">Une application web, sans installation, utilisable par toute l'équipe sur les appareils que vous avez déjà.</p>
+
+          <div className="grille-fn">
+            <div className="fn reveal"><span className="pictet">i.</span><h3>Enregistrement en un geste</h3><p>Un bouton, un micro. L'app fonctionne sur téléphone, tablette et ordinateur, et reprend là où l'on s'est arrêté.</p></div>
+            <div className="fn reveal"><span className="pictet">ii.</span><h3>Questions qui font parler</h3><p>Une bibliothèque de questions de réminiscence, adaptées au parcours de chaque résident, pour ne jamais être à court.</p></div>
+            <div className="fn reveal"><span className="pictet">iii.</span><h3>Chapitres de vie automatiques</h3><p>Chaque récit est classé dans la bonne période : enfance, jeunesse, métier, famille. La biographie se construit toute seule.</p></div>
+            <div className="fn reveal"><span className="pictet">iv.</span><h3>Photos &amp; documents</h3><p>Ajoutez les photos apportées par les familles : elles s'insèrent dans les chapitres correspondants.</p></div>
+            <div className="fn reveal"><span className="pictet">v.</span><h3>Partage avec les familles</h3><p>Les proches suivent la biographie au fil de l'eau depuis leur espace, et peuvent proposer des questions ou des souvenirs.</p></div>
+            <div className="fn reveal"><span className="pictet">vi.</span><h3>Livre relié imprimable</h3><p>À tout moment, exportez la biographie en un livre mis en page et relié — pour le résident, et un exemplaire par enfant.</p></div>
+          </div>
+        </section>
+
+        {/* IA & CONFORMITÉ */}
+        <section className="confiance" id="confiance">
+          <div className="confiance-in">
+            <div className="livre-visuel reveal" aria-hidden="true">
+              <div className="tome">
+                <div className="tranche"></div>
+                <div className="couverture">
+                  <span className="filet"></span>
+                  <span className="titre-livre">Mémoires<br />d'une vie</span>
+                  <span className="auteur">Jeanne Lacombe</span>
+                  <span className="filet"></span>
+                </div>
+              </div>
+            </div>
+            <div className="reveal">
+              <p className="eyebrow">IA &amp; conformité</p>
+              <h2 className="section-titre">Une IA au service du récit, dans un cadre fait pour le <em>médico-social</em>.</h2>
+              <p className="sous">Les histoires de vie sont des données intimes. Le fonctionnement de MyMémoires est conçu pour que vous puissiez l'expliquer sereinement aux résidents, aux familles et au CVS.</p>
+              <div className="points">
+                <div><b>i.</b><p>L'IA ne publie jamais seule : chaque texte est relu et validé par un membre de l'équipe avant d'être visible des familles.</p></div>
+                <div><b>ii.</b><p>Consentement du résident ou de son représentant recueilli dans l'app avant le premier enregistrement ; les récits restent la propriété du résident et de sa famille.</p></div>
+                <div><b>iii.</b><p>Données et enregistrements hébergés en France, conformité RGPD, jamais utilisés pour entraîner des modèles d'IA.</p></div>
+                <div><b>iv.</b><p>Abonnement par établissement, équipes illimitées, accompagnement au lancement inclus.</p></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* TÉMOIGNAGE — masqué en attendant de vrais témoignages recueillis
+            auprès des établissements. Le style .temoin reste dans index.css :
+            il suffira de décommenter et de remplacer citation + signature.
+        <section className="temoin reveal">
+          <blockquote>…</blockquote>
+          <cite><b>Fonction</b> — Établissement, région</cite>
+        </section>
+        */}
+
+        {/* DÉMO / CONTACT */}
+        <section className="final" id="demo">
+          <div className="final-in">
+            <div className="reveal">
+              <h2>Voyez l'application en action, avec les récits de <em>vos</em> résidents.</h2>
+              <p>Une démonstration de 30 minutes en visio avec votre équipe d'animation. Possibilité de démarrer par un pilote sur un petit groupe de résidents, sans engagement.</p>
+              <p className="mini">Réponse sous 24 h ouvrées · Aucune installation requise pour tester</p>
+            </div>
+            <div className="formulaire reveal">
+              {status !== 'submitted' ? (
+                <form onSubmit={handleFormSubmit} id="form-bloc">
+                  <h3>Demander une démonstration</h3>
+                  <div className="champ">
+                    <label htmlFor="f-nom">Votre nom</label>
+                    <input
+                      id="f-nom"
+                      type="text"
+                      value={nom}
+                      onChange={(e) => setNom(e.target.value)}
+                      required
+                      placeholder="Ex: Claire Martin"
+                      autoComplete="name"
+                    />
+                  </div>
+                  <div className="champ">
+                    <label htmlFor="f-fonction">Votre fonction</label>
+                    <select
+                      id="f-fonction"
+                      value={fonction}
+                      onChange={(e) => setFonction(e.target.value)}
                     >
-                      {status === 'loading' ? (
-                        <>
-                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Inscription en cours...
-                        </>
-                      ) : (
-                        <>
-                          Valider mon inscription
-                          <svg className="w-4 h-4 opacity-70 group-hover/submit:opacity-100 group-hover/submit:translate-x-1 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                          </svg>
-                        </>
-                      )}
-                    </button>
-
-                    <p className="text-center text-[12.5px] text-[#4F4D4C]/40 mt-3 font-light flex items-center justify-center gap-1.5">
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                      </svg>
-                      Vos données resteront confidentielles.
-                    </p>
-                  </form>
+                      <option value="Direction d'établissement">Direction d'établissement</option>
+                      <option value="Animation / vie sociale">Animation / vie sociale</option>
+                      <option value="Direction de groupe / régionale">Direction de groupe / régionale</option>
+                      <option value="Cadre de santé / IDEC">Cadre de santé / IDEC</option>
+                      <option value="Autre">Autre</option>
+                    </select>
+                  </div>
+                  <div className="champ">
+                    <label htmlFor="f-etab">Établissement ou groupe</label>
+                    <input
+                      id="f-etab"
+                      type="text"
+                      value={etab}
+                      onChange={(e) => setEtab(e.target.value)}
+                      required
+                      placeholder="Ex: Les Tilleuls"
+                      autoComplete="organization"
+                    />
+                  </div>
+                  <div className="champ">
+                    <label htmlFor="f-email">E-mail professionnel</label>
+                    <input
+                      id="f-email"
+                      type="email"
+                      ref={emailInputRef}
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        setEmailError(false);
+                      }}
+                      required
+                      style={{ borderColor: emailError ? '#A4413B' : undefined }}
+                      placeholder="claire@residence.fr"
+                      autoComplete="email"
+                    />
+                  </div>
+                  <button
+                    className="btn btn-or"
+                    id="f-envoyer"
+                    type="submit"
+                    disabled={status === 'loading'}
+                  >
+                    {status === 'loading' ? 'Envoi en cours...' : 'Planifier ma démonstration'}
+                  </button>
+                  <p className="rgpd">Vos coordonnées servent uniquement à vous recontacter au sujet de cette demande.</p>
+                </form>
+              ) : (
+                <div className="merci" id="merci" style={{ display: 'block' }}>
+                  <p className="plume">Merci !</p>
+                  <p>Votre demande est bien notée. Un membre de l'équipe MyMémoires vous écrit sous 24 h ouvrées.</p>
                 </div>
               )}
             </div>
           </div>
+        </section>
+      </main>
+
+      <footer>
+        <div className="footer-in">
+          <a className="logo" href="#"><span className="mot">My<em>Mémoires</em></span></a>
+          <ul className="footer-links">
+            <li><a href="#methode">Comment ça marche</a></li>
+            <li><a href="#confiance">IA &amp; conformité</a></li>
+            <li><a href="#">Particuliers</a></li>
+            <li><a href="#demo">Contact</a></li>
+          </ul>
+          <span>© 2026 MyMémoires</span>
         </div>
-      )}
-    </div>
+      </footer>
+    </>
   );
 };
 
