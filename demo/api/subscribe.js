@@ -17,7 +17,7 @@ export default async function handler(req, res) {
         return res.status(405).json({ message: 'Method Not Allowed' });
     }
 
-    const { nom, fonction, etab, email, firstName, lastName } = req.body;
+    const { nom, fonction, etab, email, firstName, lastName, actus } = req.body;
 
     // Le formulaire EHPAD est le seul à envoyer ces champs.
     const estDemandeEhpad = Boolean(nom || fonction || etab);
@@ -80,16 +80,23 @@ export default async function handler(req, res) {
       `,
             };
         } else {
+            // Consentement aux actualités : coché ou non par le visiteur. Cette
+            // notification est la seule trace du choix, aucune base n'étant
+            // encore branchée — d'où la date, qui fait office d'horodatage.
+            const consentActus = actus === true;
+
             // 1. E-mail de notification pour toi (Thibaut)
             mailToAdmin = {
                 from: `"MyMémoires Landing" <${process.env.SMTP_USER}>`,
                 to: process.env.SMTP_USER, // L'e-mail est envoyé à toi-même
-                subject: `Nouvelle inscription : ${firstName} ${lastName}`,
+                subject: `Nouvelle inscription : ${firstName} ${lastName}${consentActus ? ' — actualités OK' : ''}`,
                 html: `
         <h2>Nouvelle inscription sur la liste d'attente ! 🎉</h2>
         <p><strong>Prénom :</strong> ${firstName}</p>
         <p><strong>Nom :</strong> ${lastName}</p>
         <p><strong>E-mail :</strong> ${email}</p>
+        <p><strong>Actualités du projet :</strong> ${consentActus ? 'ACCEPTÉES' : 'refusées — alerte de lancement uniquement'}</p>
+        <p style="color:#6B6F80;font-size:13px">Consentement recueilli le ${new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}</p>
       `,
             };
 
@@ -103,6 +110,9 @@ export default async function handler(req, res) {
           <h2 style="color: #B58B8C;">Bonjour ${firstName},</h2>
           <p>Merci de l'intérêt que vous portez à <strong>MyMémoires</strong> !</p>
           <p>Nous vous confirmons que votre inscription sur notre liste d'attente a bien été prise en compte. Dès notre lancement officiel, vous serez parmi les premières personnes à être informées.</p>
+          ${consentActus
+                    ? `<p>Vous avez également accepté de recevoir nos actualités : nous vous écrirons pour vous raconter où en est le projet. Un lien de désinscription figure dans chacun de ces envois.</p>`
+                    : `<p>Vous ne recevrez rien d'autre que cet e-mail de lancement.</p>`}
           <p>À très bientôt,</p>
           <p><strong>Thibaut de MyMémoires</strong></p>
         </div>

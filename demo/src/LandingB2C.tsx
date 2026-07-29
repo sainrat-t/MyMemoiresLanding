@@ -1,6 +1,90 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 /**
+ * Les sujets du titre, tels qu'ils se succèdent dans le hero.
+ *
+ * Sujet et verbe sont séparés parce qu'ils occupent chacun leur ligne : ça
+ * garantit une seule ligne chacun à toutes les largeurs (« Vos grands-parents »
+ * est le plus long), donc aucune secousse dans la mise en page. Le verbe
+ * s'accorde : « Vos parents racontent » mais « Votre frère raconte ».
+ *
+ * Le premier de la liste est celui du rendu initial — c'est aussi celui que
+ * lisent les lecteurs d'écran et les moteurs de recherche.
+ */
+const SUJETS = [
+  { sujet: 'Vos parents', verbe: 'racontent.' },
+  { sujet: 'Vos grands-parents', verbe: 'racontent.' },
+  { sujet: 'Vos aînés', verbe: 'racontent.' },
+  { sujet: 'Votre frère', verbe: 'raconte.' },
+  { sujet: 'Votre sœur', verbe: 'raconte.' },
+  { sujet: 'Votre oncle', verbe: 'raconte.' },
+  { sujet: 'Votre tante', verbe: 'raconte.' },
+  { sujet: 'Votre épouse', verbe: 'raconte.' },
+  { sujet: 'Votre époux', verbe: 'raconte.' },
+];
+
+/** Durée d'un fondu, et temps de lecture pendant lequel le sujet reste posé. */
+const FONDU = 900;
+const LECTURE = 5200;
+
+/**
+ * Le sujet du titre, qui se renouvelle en fondu : le sujet posé s'efface
+ * doucement, le suivant réapparaît une fois l'échange fait. La lisibilité passe
+ * devant l'effet — d'où une pause largement plus longue que le fondu lui-même.
+ *
+ * L'ordre est tiré au sort — une file mélangée fait passer chaque sujet une fois
+ * avant de rebattre les cartes, pour qu'aucun ne soit oublié ni répété deux fois
+ * de suite.
+ */
+const SujetEnFondu: React.FC = () => {
+  const [affiche, setAffiche] = useState(SUJETS[0]);
+  const [efface, setEfface] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let minuteur = 0;
+    let file: typeof SUJETS = [];
+    let courant = SUJETS[0];
+
+    // Mélange de Fisher-Yates, en écartant le sujet affiché pour éviter un doublon.
+    const rebattre = () => {
+      const paquet = SUJETS.filter((s) => s !== courant);
+      for (let i = paquet.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [paquet[i], paquet[j]] = [paquet[j], paquet[i]];
+      }
+      file = paquet;
+    };
+
+    const disparaitre = () => {
+      setEfface(true);
+      minuteur = window.setTimeout(apparaitre, FONDU);
+    };
+
+    // Le texte est échangé pendant que le titre est transparent : on ne voit
+    // jamais deux sujets se chevaucher.
+    const apparaitre = () => {
+      if (file.length === 0) rebattre();
+      courant = file.shift() as (typeof SUJETS)[number];
+      setAffiche(courant);
+      setEfface(false);
+      minuteur = window.setTimeout(disparaitre, FONDU + LECTURE);
+    };
+
+    minuteur = window.setTimeout(disparaitre, LECTURE);
+    return () => window.clearTimeout(minuteur);
+  }, []);
+
+  return (
+    <span className={efface ? 'sujet efface' : 'sujet'} aria-hidden="true">
+      <span>{affiche.sujet}</span>
+      <span>{affiche.verbe}</span>
+    </span>
+  );
+};
+
+/**
  * Page particuliers (racine du domaine).
  *
  * Reprend la charte de l'application mobile — crème, rose poudré, Newsreader
@@ -14,16 +98,21 @@ const LandingB2C: React.FC = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  // Consentement aux actualités : distinct de l'alerte de lancement, et décoché
+  // par défaut — c'est ce que la CNIL attend d'un consentement spécifique.
+  const [actus, setActus] = useState(false);
   const [status, setStatus] = useState<'idle' | 'loading' | 'submitted'>('idle');
   const [chrono, setChrono] = useState(492); // 08:12, comme la maquette du studio
+  const [enregistre, setEnregistre] = useState(true); // la touche du studio, enfoncée
   const emailRef = useRef<HTMLInputElement>(null);
 
-  // Compteur de la cassette : donne vie à l'illustration du studio.
+  // Compteur de la cassette : il n'avance que touche enfoncée, comme dans l'app.
   useEffect(() => {
+    if (!enregistre) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const id = window.setInterval(() => setChrono((s) => s + 1), 1000);
     return () => window.clearInterval(id);
-  }, []);
+  }, [enregistre]);
 
   // Apparition des sections au défilement.
   useEffect(() => {
@@ -62,7 +151,7 @@ const LandingB2C: React.FC = () => {
       const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstName, lastName, email }),
+        body: JSON.stringify({ firstName, lastName, email, actus }),
       });
       if (response.ok) {
         setStatus('submitted');
@@ -101,27 +190,38 @@ const LandingB2C: React.FC = () => {
         <section className="hero">
           <div>
             <span className="pastille"><i aria-hidden="true"></i>Application iOS et Android — bientôt disponible</span>
-            <h1>Vos parents racontent. <em>Toute la famille tient la plume.</em></h1>
+            <h1>
+              <span className="lu-seulement">{SUJETS[0].sujet} {SUJETS[0].verbe}</span>
+              <SujetEnFondu />
+              <em>Vous écoutez, l'IA tient la plume.</em>
+            </h1>
             <p className="lead">
-              MyMémoires recueille les souvenirs d'un aîné au fil des visites — les vôtres, celles de votre frère,
-              celles de vos enfants. Chaque conversation devient un chapitre écrit. À la fin, un livre relié.
+              MyMémoires recueille les souvenirs d'un aîné au fil de vos discussions, celles avec votre frère,
+              vos enfants… Chaque conversation devient un chapitre écrit. À la fin, un livre relié.
             </p>
             <div className="hero-ctas">
               <a className="pilule pilule-encre" href="#attente">Être prévenu du lancement</a>
               <a className="ligne-serif" href="#geste">voir comment le livre s'écrit</a>
             </div>
-            <p className="hero-mini">
-              <b>Les trois premiers souvenirs sont offerts.</b>&nbsp;Aucune carte bancaire pour commencer.
-            </p>
           </div>
 
-          {/* Le studio « la bobine » — le geste signature de l'application */}
-          <div className="tel" aria-hidden="true">
+          {/* Le studio « la bobine » — le geste signature de l'application.
+              Illustration décorative, donc masquée aux lecteurs d'écran : la
+              touche se manipule à la souris, sans rien apporter que le texte de
+              la page ne dise déjà. */}
+          <div className={enregistre ? 'tel' : 'tel pause'} aria-hidden="true">
             <div className="tel-tete">
-              <span className="rec"></span><span>REC</span>
+              {enregistre ? (
+                <>
+                  <span className="rec"></span>
+                  <span>REC</span>
+                </>
+              ) : (
+                <span className="en-pause">EN PAUSE</span>
+              )}
             </div>
             <div className="cassette">
-              <p className="theme">Thème · Le bal du 14 juillet<b></b></p>
+              <p className="theme">Thème · Le bal du 14 juillet</p>
               <div className="bobines">
                 <span className="bobine"><i></i></span>
                 <span className="bobine-lien"></span>
@@ -131,11 +231,20 @@ const LandingB2C: React.FC = () => {
                 <i></i><i></i><i></i><i></i><i></i>
               </div>
               <p className="compteur">Face A · {minutes}:{secondes} <em>· ✓ sauvegardé</em></p>
-              <div className="touche enfoncee"><i></i></div>
-              <p className="touche-label">RELEVER POUR TERMINER</p>
+              <button
+                type="button"
+                className={enregistre ? 'touche enfoncee' : 'touche'}
+                onClick={() => setEnregistre((v) => !v)}
+                tabIndex={-1}
+              >
+                <i></i>
+              </button>
+              <p className="touche-label">
+                {enregistre ? 'RELEVER POUR TERMINER' : 'APPUYER POUR ENREGISTRER'}
+              </p>
             </div>
             <div className="questions">
-              <span className="rubrique">Posez la suivante</span>
+              <span className="rubrique">Questions suggérées</span>
               <hr className="filet" />
               <div className="question active">
                 <span>01</span>
@@ -177,7 +286,7 @@ const LandingB2C: React.FC = () => {
               </div>
               <div className="reveal">
                 <span className="num">02</span>
-                <h3>La plume transcrit</h3>
+                <h3>L'IA tient la plume</h3>
                 <p>
                   La parole devient un texte écrit, rangé dans le bon chapitre et la bonne période de la vie.
                   Personne, dans la famille, n'a une ligne à rédiger.
@@ -187,8 +296,8 @@ const LandingB2C: React.FC = () => {
                 <span className="num">03</span>
                 <h3>Le livre s'épaissit</h3>
                 <p>
-                  Chaque souvenir ajoute ses pages. Aucun pourcentage, aucune jauge : simplement
-                  « 86 pages tissées — encore deux souvenirs avant l'impression ».
+                  Chaque souvenir ajoute ses pages, et les chapitres se composent d'eux-mêmes — jusqu'à former
+                  une biographie complète, prête à être imprimée.
                 </p>
               </div>
             </div>
@@ -287,11 +396,17 @@ const LandingB2C: React.FC = () => {
         {/* LE LIVRE */}
         <section className="section livre" id="livre">
           <div className="dedans livre-grille">
-            <div className="reveal">
-              <div className="couverture">
-                <div className="portrait"></div>
-                <p className="titre">JEANNE</p>
-                <p className="sous">récits d'une vie</p>
+            {/* Le volume relié — même construction que la page établissements,
+                habillée aux couleurs des particuliers. Il se redresse au survol. */}
+            <div className="livre-visuel reveal" aria-hidden="true">
+              <div className="tome">
+                <div className="tranche"></div>
+                <div className="couverture">
+                  <span className="filet"></span>
+                  <span className="titre-livre">Récits<br />d'une vie</span>
+                  <span className="auteur">Jeanne Lacombe</span>
+                  <span className="filet"></span>
+                </div>
               </div>
             </div>
             <div className="reveal">
@@ -414,7 +529,6 @@ const LandingB2C: React.FC = () => {
                 MyMémoires arrive sur iOS et Android. Laissez-nous votre adresse : vous serez prévenu au
                 lancement, et vous ferez partie des premières familles à enregistrer.
               </p>
-              <p className="mini">Un seul e-mail, au lancement. Pas de newsletter.</p>
             </div>
             <div className="formulaire reveal">
               {status !== 'submitted' ? (
@@ -462,12 +576,20 @@ const LandingB2C: React.FC = () => {
                       autoComplete="email"
                     />
                   </div>
+                  <label className="case">
+                    <input
+                      type="checkbox"
+                      checked={actus}
+                      onChange={(e) => setActus(e.target.checked)}
+                    />
+                    <span>Je souhaite aussi recevoir les actualités du projet.</span>
+                  </label>
                   <button className="pilule pilule-encre" type="submit" disabled={status === 'loading'}>
                     {status === 'loading' ? 'Envoi en cours…' : "M'inscrire à l'avant-première"}
                   </button>
                   <p className="rgpd">
-                    Vos coordonnées servent uniquement à vous prévenir de la sortie de l'application. Elles ne
-                    sont ni revendues, ni partagées.
+                    Vos coordonnées servent à vous prévenir de la sortie de l'application. Elles ne sont ni
+                    revendues, ni partagées, et chaque e-mail contient un lien de désinscription.
                   </p>
                 </form>
               ) : (
