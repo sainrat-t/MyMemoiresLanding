@@ -165,13 +165,27 @@ header{
   font-size:clamp(2.5rem,5.2vw,3.9rem);line-height:1.08;letter-spacing:-.02em;
 }
 .hero h1 em{font-style:italic;color:var(--deep)}
+
+/* --- Le sujet du titre, renouvelé en fondu ------------------------------- */
+
+/* Le sujet initial, laissé aux lecteurs d'écran : le fondu est décoratif. */
+.lu-seulement{
+  position:absolute;width:1px;height:1px;
+  overflow:hidden;clip-path:inset(50%);white-space:nowrap;
+}
+.sujet{display:block}
+/* Sujet et verbe : une ligne chacun, jamais de retour à la ligne — la hauteur
+   du titre reste la même d'un sujet à l'autre. */
+.sujet > span{
+  display:block;white-space:nowrap;
+  transition:opacity .9s cubic-bezier(.4,0,.4,1);
+}
+.sujet.efface > span{opacity:0}
 .hero .lead{
   margin-top:26px;font-size:18px;line-height:1.65;
   color:var(--secondary);font-weight:300;max-width:31em;
 }
 .hero-ctas{display:flex;flex-wrap:wrap;align-items:center;gap:18px;margin-top:38px}
-.hero-mini{margin-top:26px;font-size:13px;line-height:1.6;color:var(--tertiary)}
-.hero-mini b{color:var(--secondary);font-weight:600}
 
 /* --- Le téléphone : le studio « la bobine » --------------------------- */
 
@@ -197,6 +211,11 @@ header{
 .tel-tete span{
   font-size:11px;font-weight:700;letter-spacing:.15em;color:var(--rec);
 }
+.tel-tete .en-pause{color:var(--faded)}
+
+/* Bande à l'arrêt : les bobines se figent où elles sont, le vumètre retombe. */
+.tel.pause .bobine{animation-play-state:paused}
+.tel.pause .vumetre i{animation:none;transform:scaleY(.16);opacity:.45}
 
 /* Carte cassette */
 .cassette{
@@ -207,11 +226,6 @@ header{
   font-family:var(--edito);font-style:italic;font-size:13.5px;
   color:var(--secondary);text-align:center;margin-bottom:16px;
 }
-.cassette .theme b{
-  display:inline-block;width:2px;height:13px;background:var(--accent);
-  vertical-align:-2px;margin-left:2px;animation:mm-blink 1.1s steps(1) infinite;
-}
-@keyframes mm-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
 
 .bobines{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:16px}
 .bobine{
@@ -253,6 +267,13 @@ header{
   box-shadow:0 6px 0 var(--deep), 0 10px 14px rgba(183,148,148,.4);
   display:flex;align-items:center;justify-content:center;
   transform:translateY(0);transition:transform .12s ease-out, box-shadow .12s ease-out;
+  /* Vraie touche cliquable : on annule le rendu natif du bouton. */
+  border:0;padding:0;appearance:none;-webkit-appearance:none;cursor:pointer;
+}
+/* Léger enfoncement au survol quand la touche est relevée : ça se voit cliquable. */
+.touche:not(.enfoncee):hover{
+  transform:translateY(2px);
+  box-shadow:0 4px 0 var(--deep), 0 7px 11px rgba(183,148,148,.4);
 }
 .touche i{width:12px;height:12px;border-radius:2px;background:#fff}
 .touche.enfoncee{
@@ -372,29 +393,41 @@ header{
 .livre-grille{
   display:grid;grid-template-columns:340px 1fr;gap:70px;align-items:center;
 }
+/* Le volume relié : construction reprise de la page établissements, habillée
+   en bordeaux et or. Le livre est incliné au repos et se redresse au survol. */
+.livre-visuel{display:flex;justify-content:center;perspective:1400px}
+.tome{
+  position:relative;width:240px;height:336px;
+  transform:rotateY(-22deg) rotateX(2deg);
+  transform-style:preserve-3d;transition:transform .5s ease;
+}
+.livre-visuel:hover .tome{transform:rotateY(-14deg) rotateX(1deg)}
 .couverture{
-  width:212px;height:284px;margin:0 auto;
-  background:var(--bordeaux);border-radius:3px 9px 9px 3px;
-  box-shadow:0 22px 38px rgba(41,37,36,.22), inset 14px 0 18px -14px rgba(0,0,0,.55);
-  padding:26px 22px;display:flex;flex-direction:column;align-items:center;
-  position:relative;
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#7E4747,var(--bordeaux) 55%,#552C2C);
+  border-radius:3px 8px 8px 3px;box-shadow:0 24px 50px rgba(41,37,36,.34);
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  padding:30px;text-align:center;
 }
+/* Le pli du dos, côté reliure */
 .couverture::before{
-  content:"";position:absolute;inset:11px 9px;
-  border:1px solid rgba(231,215,174,.55);border-radius:2px;
+  content:"";position:absolute;left:14px;top:0;bottom:0;width:1px;
+  background:rgba(231,215,174,.18);
 }
-.couverture .portrait{
-  width:104px;height:132px;border-radius:52px/66px;margin:14px 0 20px;
-  background:rgba(231,215,174,.14);
-  border:1px solid rgba(231,215,174,.4);
+.couverture .filet{width:54px;height:1px;background:var(--gold);margin:16px 0}
+.couverture .titre-livre{
+  font-family:var(--edito);font-style:italic;color:var(--gold);
+  font-size:1.4rem;line-height:1.3;
 }
-.couverture .titre{
-  font-family:var(--edito);font-size:19px;font-weight:500;
-  letter-spacing:.22em;color:var(--gold);text-align:center;
+.couverture .auteur{
+  margin-top:10px;font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(231,215,174,.7);
 }
-.couverture .sous{
-  margin-top:9px;font-family:var(--edito);font-style:italic;font-size:12px;
-  color:rgba(231,215,174,.65);text-align:center;
+/* La tranche : les pages vues de côté, dorées sur tranche */
+.tranche{
+  position:absolute;top:5px;bottom:5px;right:-13px;width:13px;
+  background:repeating-linear-gradient(180deg,var(--gold) 0 2px,#B79E6E 2px 3px);
+  transform:rotateY(60deg);transform-origin:left;border-radius:0 2px 2px 0;
 }
 .livre-details{margin-top:32px;display:flex;flex-direction:column;gap:0}
 .livre-details > div{
@@ -477,7 +510,6 @@ header{
 .attente .chapo{
   margin-top:20px;color:rgba(251,250,247,.66);font-weight:300;max-width:30em;
 }
-.attente .mini{margin-top:18px;font-size:12.5px;color:rgba(251,250,247,.42)}
 .formulaire{
   background:var(--card);border-radius:16px;padding:32px 30px;
   box-shadow:0 22px 50px rgba(0,0,0,.28);
@@ -500,7 +532,16 @@ header{
 }
 .champ input::placeholder{color:var(--faded)}
 .champ input:focus{outline:none;border-color:var(--deep);background:#fff}
-.formulaire .pilule{width:100%;margin-top:10px}
+/* Le consentement aux actualités : case décochée, distincte de l'inscription */
+.case{
+  display:flex;gap:11px;align-items:flex-start;margin-top:6px;
+  font-size:12.5px;line-height:1.55;color:var(--secondary);cursor:pointer;
+}
+.case input{
+  flex:none;width:17px;height:17px;margin-top:1px;
+  accent-color:var(--bordeaux);cursor:pointer;
+}
+.formulaire .pilule{width:100%;margin-top:18px}
 .formulaire .rgpd{margin-top:16px;font-size:11.5px;color:var(--legal);line-height:1.6}
 .merci{text-align:center;padding:14px 0}
 .merci .losange{margin-bottom:20px}
@@ -536,7 +577,9 @@ footer{
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
   .reveal{opacity:1;transform:none;transition:none}
-  .bobine,.vumetre i,.pastille i,.tel-tete .rec,.cassette .theme b{animation:none}
+  .bobine,.vumetre i,.pastille i,.tel-tete .rec{animation:none}
+  .sujet > span{transition:none}
+  .tome{transition:none}
   .vumetre i{transform:scaleY(.7)}
   .pilule{transition:none}
 }
@@ -575,4 +618,8 @@ footer{
   .offre{gap:14px;padding:20px 2px}
   .offre-prix b{font-size:21px}
   .footer-in{flex-direction:column;align-items:flex-start;gap:18px}
+}
+@media (max-width: 374px){
+  /* Sous 375 px, « Vos grands-parents » ne tient plus sur une ligne à taille pleine. */
+  .sujet{font-size:.82em}
 }
