@@ -567,6 +567,20 @@ footer{
 .footer-liens a{transition:color .2s}
 .footer-liens a:hover{color:var(--bg)}
 
+/* Mention de soutien : une ligne discrète sous le pied de page.
+   Le lama se comporte comme un caractère du texte — d'où le
+   dimensionnement en em et le calage sur la ligne de base. */
+.footer-soutien{
+  max-width:1080px;margin:20px auto 0;
+  font-size:12px;color:rgba(251,250,247,.38);
+}
+.footer-soutien .lama{
+  display:inline-block;width:1.15em;height:1.15em;
+  vertical-align:-.22em;
+}
+.footer-soutien a{color:rgba(251,250,247,.6);text-decoration:none;transition:color .2s}
+.footer-soutien a:hover{color:var(--bg)}
+
 /* ==========================================================================
    Apparition au défilement
    ========================================================================== */

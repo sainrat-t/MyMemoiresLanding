@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import SoutienLamarck from './SoutienLamarck';
 
 /**
  * Les sujets du titre, tels qu'ils se succèdent dans le hero.
@@ -619,6 +620,7 @@ const LandingB2C: React.FC = () => {
           </ul>
           <span>© 2026 MyMémoires</span>
         </div>
+        <SoutienLamarck />
       </footer>
     </>
   );

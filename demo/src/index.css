@@ -224,11 +224,18 @@ h1 em{font-style:italic;color:var(--stylo)}
 
 /* ---------- Footer ---------- */
 footer{background:var(--encre-fonce);color:rgba(247,245,238,.55);border-top:1px solid rgba(247,245,238,.12)}
-.footer-in{max-width:1180px;margin:0 auto;padding:44px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;font-size:.85rem}
+.footer-in{max-width:1180px;margin:0 auto;padding:44px 28px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;font-size:.85rem}
 .footer-in .logo{color:var(--papier);font-size:1.15rem}
 .footer-links{display:flex;gap:26px;list-style:none}
 .footer-links a{text-decoration:none;transition:color .2s}
 .footer-links a:hover{color:var(--papier)}
+/* Mention de soutien : ligne discrète sous la rangée principale.
+   Le lama se comporte comme un caractère du texte — d'où le
+   dimensionnement en em et le calage sur la ligne de base. */
+.footer-soutien{max-width:1180px;margin:0 auto;padding:0 28px 40px;font-size:.78rem;color:rgba(247,245,238,.4)}
+.footer-soutien .lama{display:inline-block;width:1.15em;height:1.15em;vertical-align:-.22em}
+.footer-soutien a{color:rgba(247,245,238,.62);text-decoration:none;transition:color .2s}
+.footer-soutien a:hover{color:var(--papier)}
 
 /* ---------- Reveal ---------- */
 .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
