@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import SoutienLamarck from './SoutienLamarck';
 
 const LandingPage: React.FC = () => {
   // Chrono Time State
@@ -407,6 +408,7 @@ const LandingPage: React.FC = () => {
           </ul>
           <span>© 2026 MyMémoires</span>
         </div>
+        <SoutienLamarck />
       </footer>
     </>
   );
