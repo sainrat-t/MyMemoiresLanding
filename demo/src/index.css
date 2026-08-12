@@ -229,6 +229,12 @@ footer{background:var(--encre-fonce);color:rgba(247,245,238,.55);border-top:1px 
 .footer-links{display:flex;gap:26px;list-style:none}
 .footer-links a{text-decoration:none;transition:color .2s}
 .footer-links a:hover{color:var(--papier)}
+.footer-reseaux{display:flex;align-items:center;gap:14px}
+.footer-reseaux a{
+  color:rgba(247,245,238,.55);display:inline-flex;align-items:center;justify-content:center;
+  transition:color .2s, transform .2s;
+}
+.footer-reseaux a:hover{color:var(--papier);transform:translateY(-1px)}
 /* Mention de soutien : ligne discrète sous la rangée principale.
    Le lama se comporte comme un caractère du texte — d'où le
    dimensionnement en em et le calage sur la ligne de base. */

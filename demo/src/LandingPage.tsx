@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import SoutienLamarck from './SoutienLamarck';
+import ReseauxSociaux from './ReseauxSociaux';
 
 const LandingPage: React.FC = () => {
   // Chrono Time State
@@ -403,9 +404,10 @@ const LandingPage: React.FC = () => {
           <ul className="footer-links">
             <li><a href="#methode">Comment ça marche</a></li>
             <li><a href="#confiance">IA &amp; conformité</a></li>
-            <li><a href="#">Particuliers</a></li>
+            <li><a href="/">Particuliers</a></li>
             <li><a href="#demo">Contact</a></li>
           </ul>
+          <ReseauxSociaux />
           <span>© 2026 MyMémoires</span>
         </div>
         <SoutienLamarck />
